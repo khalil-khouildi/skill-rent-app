@@ -13,10 +13,10 @@ class _PostRequestScreenState extends State<PostRequestScreen> {
   String _selectedCategory = 'Plumbing';
   String _selectedUrgency = 'Today';
   
-  final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _budgetController = TextEditingController();
   final TextEditingController _locationController = TextEditingController();
+  final TextEditingController _titleController = TextEditingController();
   
   bool _isLoading = false;
   
@@ -24,10 +24,10 @@ class _PostRequestScreenState extends State<PostRequestScreen> {
 
   @override
   void dispose() {
-    _titleController.dispose();
     _descriptionController.dispose();
     _budgetController.dispose();
     _locationController.dispose();
+    _titleController.dispose();
     super.dispose();
   }
 
@@ -68,6 +68,7 @@ class _PostRequestScreenState extends State<PostRequestScreen> {
     });
     
     if (success && mounted) {
+      // Show success message
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('✅ Request posted successfully!'),
@@ -76,11 +77,13 @@ class _PostRequestScreenState extends State<PostRequestScreen> {
         ),
       );
       
+      // Clear form
       _titleController.clear();
       _descriptionController.clear();
       _budgetController.clear();
       _locationController.clear();
       
+      // Go back to home after 1 second
       Future.delayed(const Duration(seconds: 1), () {
         if (mounted) {
           Navigator.pop(context);
@@ -159,8 +162,8 @@ class _PostRequestScreenState extends State<PostRequestScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // TITLE FIELD - ADDED!
-                  _buildSectionLabel('Title *'),
+                  // Title Field
+                  _buildSectionLabel('Title'),
                   const SizedBox(height: 8),
                   TextField(
                     controller: _titleController,
@@ -176,8 +179,8 @@ class _PostRequestScreenState extends State<PostRequestScreen> {
                   ),
                   const SizedBox(height: 24),
                   
-                  // Description
-                  _buildSectionLabel('Description *'),
+                  // Description Field
+                  _buildSectionLabel('Description'),
                   const SizedBox(height: 8),
                   TextField(
                     controller: _descriptionController,
@@ -195,7 +198,7 @@ class _PostRequestScreenState extends State<PostRequestScreen> {
                   const SizedBox(height: 24),
                   
                   // Category
-                  _buildSectionLabel('Category *'),
+                  _buildSectionLabel('Category'),
                   const SizedBox(height: 8),
                   Wrap(
                     spacing: 8,
@@ -212,13 +215,14 @@ class _PostRequestScreenState extends State<PostRequestScreen> {
                   const SizedBox(height: 24),
                   
                   // Budget
-                  _buildSectionLabel('Estimated Budget *'),
+                  _buildSectionLabel('Estimated Budget'),
                   const SizedBox(height: 8),
                   TextField(
                     controller: _budgetController,
+                    keyboardType: TextInputType.text,
                     decoration: InputDecoration(
                       prefixIcon: const Icon(Icons.attach_money),
-                      hintText: 'e.g., \$50 - \$80',
+                      hintText: 'e.g., \$50 - \$80 or \$150 fixed',
                       filled: true,
                       fillColor: const Color(0xFFF2F3FD),
                       border: OutlineInputBorder(
@@ -230,7 +234,7 @@ class _PostRequestScreenState extends State<PostRequestScreen> {
                   const SizedBox(height: 24),
                   
                   // Location
-                  _buildSectionLabel('Location *'),
+                  _buildSectionLabel('Location'),
                   const SizedBox(height: 8),
                   TextField(
                     controller: _locationController,
@@ -248,7 +252,7 @@ class _PostRequestScreenState extends State<PostRequestScreen> {
                   const SizedBox(height: 24),
                   
                   // Urgency
-                  _buildSectionLabel('Urgency *'),
+                  _buildSectionLabel('Urgency'),
                   const SizedBox(height: 8),
                   Container(
                     padding: const EdgeInsets.all(4),
@@ -266,6 +270,7 @@ class _PostRequestScreenState extends State<PostRequestScreen> {
                   ),
                   const SizedBox(height: 32),
                   
+                  // Submit Button
                   _isLoading
                       ? const Center(child: CircularProgressIndicator())
                       : ElevatedButton(

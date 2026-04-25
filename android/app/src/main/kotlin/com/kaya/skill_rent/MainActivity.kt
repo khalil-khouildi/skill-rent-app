@@ -1,4 +1,4 @@
-package com.example.skill_rent
+package com.kaya.skill_rent
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';  // Add this
+import '../providers/auth_provider.dart';  // Add this
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -11,6 +13,26 @@ class ProfileScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: const Color(0xFFF9F9FF),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        title: Text(
+          'Profile',
+          style: GoogleFonts.inter(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: const Color(0xFF191C23),
+          ),
+        ),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () => _showLogoutDialog(context),
+            icon: const Icon(Icons.logout, color: Colors.red),
+            tooltip: 'Logout',
+          ),
+        ],
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -259,6 +281,34 @@ class ProfileScreen extends StatelessWidget {
           Text(
             comment,
             style: GoogleFonts.inter(fontSize: 13, color: Colors.grey[700], height: 1.4),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // This method is NOW inside the class
+  void _showLogoutDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Logout'),
+        content: const Text('Are you sure you want to logout?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () async {
+              final authProvider = context.read<AuthProvider>();
+              await authProvider.logout();
+              if (context.mounted) {
+                Navigator.pushReplacementNamed(context, '/welcome');
+              }
+            },
+            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            child: const Text('Logout'),
           ),
         ],
       ),

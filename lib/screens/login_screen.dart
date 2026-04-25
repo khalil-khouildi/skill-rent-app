@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import '../providers/auth_provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -10,10 +12,19 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool _obscurePassword = true;
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    const primaryColor = Color(0xFF005BBF); // The login design uses a blue primary
+    const primaryColor = Color(0xFF005BBF);
     const onSurfaceVariant = Color(0xFF414754);
 
     return Scaffold(
@@ -36,10 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 8),
               Text(
                 'Welcome back! Please enter your details.',
-                style: GoogleFonts.inter(
-                  fontSize: 16,
-                  color: onSurfaceVariant,
-                ),
+                style: GoogleFonts.inter(fontSize: 16, color: onSurfaceVariant),
               ),
               const SizedBox(height: 48),
               Container(
@@ -69,6 +77,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox(height: 8),
                     TextField(
+                      controller: emailController,
                       decoration: InputDecoration(
                         hintText: 'Enter your email',
                         prefixIcon: const Icon(Icons.mail_outline, size: 20),
@@ -92,6 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox(height: 8),
                     TextField(
+                      controller: passwordController,
                       obscureText: _obscurePassword,
                       decoration: InputDecoration(
                         hintText: '••••••••',
@@ -133,8 +143,36 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox(height: 24),
                     ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushReplacementNamed(context, '/home');
+                      onPressed: () async {
+                        // Show loading indicator
+                        showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (context) => const Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        );
+
+                        final authProvider = context.read<AuthProvider>();
+                        bool success = await authProvider.login(
+                          emailController.text.trim(),
+                          passwordController.text.trim(),
+                        );
+
+                        // Close loading dialog
+                        if (context.mounted) Navigator.pop(context);
+
+                        if (success && context.mounted) {
+                          Navigator.pushReplacementNamed(context, '/home');
+                        } else if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Invalid email or password'),
+                              backgroundColor: Colors.red,
+                              duration: Duration(seconds: 2),
+                            ),
+                          );
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF1A73E8),

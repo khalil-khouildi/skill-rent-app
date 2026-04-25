@@ -154,35 +154,48 @@ class MyRequestsScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(color: bg, shape: BoxShape.circle),
-                    child: Icon(icon, color: text, size: 20),
-                  ),
-                  const SizedBox(width: 12),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        title,
-                        style: GoogleFonts.inter(fontWeight: FontWeight.bold, fontSize: 14),
-                      ),
-                      Text(time, style: GoogleFonts.inter(fontSize: 11, color: Colors.grey)),
-                    ],
-                  ),
-                ],
+              // Icon - fixed width to prevent overflow
+              SizedBox(
+                width: 40,
+                height: 40,
+                child: Container(
+                  decoration: BoxDecoration(color: bg, shape: BoxShape.circle),
+                  child: Icon(icon, color: text, size: 20),
+                ),
               ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                decoration: BoxDecoration(color: statusBg, borderRadius: BorderRadius.circular(20)),
-                child: Text(
-                  status,
-                  style: GoogleFonts.inter(fontSize: 10, color: statusText, fontWeight: FontWeight.bold),
+              const SizedBox(width: 12),
+              // Title and time - Expanded to take remaining space
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: GoogleFonts.inter(fontWeight: FontWeight.bold, fontSize: 14),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Text(
+                      time,
+                      style: GoogleFonts.inter(fontSize: 11, color: Colors.grey),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 8),
+              // Status badge - flexible width
+              Flexible(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                  decoration: BoxDecoration(color: statusBg, borderRadius: BorderRadius.circular(20)),
+                  child: Text(
+                    status,
+                    style: GoogleFonts.inter(fontSize: 10, color: statusText, fontWeight: FontWeight.bold),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
               ),
             ],
@@ -200,9 +213,11 @@ class MyRequestsScreen extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                price,
-                style: GoogleFonts.inter(fontWeight: FontWeight.bold, color: const Color(0xFF005BBF)),
+              Expanded(
+                child: Text(
+                  price,
+                  style: GoogleFonts.inter(fontWeight: FontWeight.bold, color: const Color(0xFF005BBF)),
+                ),
               ),
               if (hasApplicants)
                 ElevatedButton(

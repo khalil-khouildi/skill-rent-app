@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import '../providers/auth_provider.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -11,6 +13,18 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   String _selectedRole = 'client';
   bool _obscurePassword = true;
+  
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -121,9 +135,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ],
                     ),
                     const SizedBox(height: 24),
-                    _buildInputField('Full Name', 'John Doe'),
+                    _buildInputField('Full Name', 'John Doe', nameController),
                     const SizedBox(height: 24),
-                    _buildInputField('Email', 'john@example.com'),
+                    _buildInputField('Email', 'john@example.com', emailController),
                     const SizedBox(height: 24),
                     Text(
                       'Password',
@@ -135,6 +149,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     const SizedBox(height: 8),
                     TextField(
+                      controller: passwordController,
                       obscureText: _obscurePassword,
                       decoration: InputDecoration(
                         hintText: '••••••••',
@@ -160,8 +175,38 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     const SizedBox(height: 32),
                     ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushReplacementNamed(context, '/home');
+                      onPressed: () async {
+                        // Show loading indicator
+                        showDialog(
+                          context: context,
+                          barrierDismissible: false,
+                          builder: (context) => const Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        );
+
+                        final authProvider = context.read<AuthProvider>();
+                        bool success = await authProvider.register(
+                          email: emailController.text.trim(),
+                          password: passwordController.text.trim(),
+                          fullName: nameController.text.trim(),
+                          role: _selectedRole,
+                        );
+
+                        // Close loading dialog
+                        if (context.mounted) Navigator.pop(context);
+
+                        if (success && context.mounted) {
+                          Navigator.pushReplacementNamed(context, '/home');
+                        } else if (context.mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Registration failed. Email may already exist.'),
+                              backgroundColor: Colors.red,
+                              duration: Duration(seconds: 2),
+                            ),
+                          );
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF1A73E8),
@@ -248,7 +293,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  Widget _buildInputField(String label, String hint) {
+  Widget _buildInputField(String label, String hint, TextEditingController controller) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -262,6 +307,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ),
         const SizedBox(height: 8),
         TextField(
+          controller: controller,
           decoration: InputDecoration(
             hintText: hint,
             filled: true,
