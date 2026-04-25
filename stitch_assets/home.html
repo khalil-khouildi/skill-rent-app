@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Skill Rent - Client Home Screen</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-background": "#191c23",
+                        "tertiary": "#9e4300",
+                        "on-surface": "#191c23",
+                        "primary": "#005bbf",
+                        "on-primary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "on-primary-fixed-variant": "#004493",
+                        "primary-fixed-dim": "#adc7ff",
+                        "on-secondary": "#ffffff",
+                        "inverse-on-surface": "#eff0fa",
+                        "inverse-surface": "#2d3038",
+                        "tertiary-fixed": "#ffdbcb",
+                        "on-secondary-fixed-variant": "#832600",
+                        "on-primary-fixed": "#001a41",
+                        "on-tertiary-fixed": "#341100",
+                        "on-tertiary-container": "#0e0200",
+                        "outline": "#727785",
+                        "surface-tint": "#005bc0",
+                        "error": "#ba1a1a",
+                        "on-primary-container": "#ffffff",
+                        "surface-container-low": "#f2f3fd",
+                        "surface": "#f9f9ff",
+                        "outline-variant": "#c1c6d6",
+                        "surface-container": "#ecedf7",
+                        "on-surface-variant": "#414754",
+                        "secondary-fixed": "#ffdbd0",
+                        "tertiary-fixed-dim": "#ffb691",
+                        "primary-fixed": "#d8e2ff",
+                        "secondary-container": "#fe6a34",
+                        "surface-container-highest": "#e0e2ec",
+                        "surface-dim": "#d8d9e3",
+                        "surface-bright": "#f9f9ff",
+                        "error-container": "#ffdad6",
+                        "inverse-primary": "#adc7ff",
+                        "background": "#f9f9ff",
+                        "on-secondary-fixed": "#390c00",
+                        "surface-container-high": "#e6e8f2",
+                        "primary-container": "#1a73e8",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-fixed-variant": "#783100",
+                        "on-secondary-container": "#5d1900",
+                        "on-tertiary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "tertiary-container": "#c55500",
+                        "secondary-fixed-dim": "#ffb59d",
+                        "surface-variant": "#e0e2ec",
+                        "secondary": "#ab3500"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px",
+                        "card": "16px"
+                    },
+                    "spacing": {
+                        "base": "4px",
+                        "xxl": "48px",
+                        "lg": "24px",
+                        "md": "16px",
+                        "gutter": "24px",
+                        "xl": "32px",
+                        "xs": "8px",
+                        "container-max": "1280px",
+                        "sm": "12px",
+                        "safe": "env(safe-area-inset-bottom)"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "h3": ["Inter"],
+                        "h1": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "h2": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "500" }],
+                        "label-sm": ["12px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "h3": ["24px", { "lineHeight": "1.3", "fontWeight": "600" }],
+                        "h1": ["40px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "h2": ["32px", { "lineHeight": "1.25", "letterSpacing": "-0.01em", "fontWeight": "600" }]
+                    },
+                    boxShadow: {
+                        'level-1': '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
+                        'level-2': '0px 4px 20px rgba(0, 0, 0, 0.05)',
+                        'level-3': '0px 12px 32px rgba(0, 0, 0, 0.12)',
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #F8F9FA; }
+        .material-symbols-outlined { font-family: 'Material Symbols Outlined'; font-weight: normal; font-style: normal; font-size: 24px; line-height: 1; letter-spacing: normal; text-transform: none; display: inline-block; white-space: nowrap; word-wrap: normal; direction: ltr; -webkit-font-feature-settings: 'liga'; -webkit-font-smoothing: antialiased; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md antialiased pb-[96px] md:pb-0">
+<!-- TopAppBar -->
+<header class="sticky top-0 z-50 flex items-center justify-between px-4 h-16 w-full max-w-md mx-auto bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800 shadow-sm md:hidden">
+<div class="flex items-center gap-xs">
+<img alt="User Profile" class="w-8 h-8 rounded-full object-cover" data-alt="Headshot of a smiling young man wearing a casual shirt, soft natural lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBOq_8q6JaZZNgBnAydAnVPOQ1hifVTweOsANEFNApbcFBDACxid9WMIKaF8MLoV72kf9l6RRqPLWOQkL9faDQJxDifFIvY0QePlXsBdboYYAI5hqD2rXAYjZu4K9onCAYJOVOwqVRrbQowHvGADUgMq8ka9dCvw66dwRnLevEmYoOshGiMHPdvw5gs8o_OxfdvuCTX1JPsN0ozYkCLt1TArP-Wc5S2tBcDgXY7y6jE3c5puhFvuYcqye-9pxRqV1JUgFjr4hQ2P7dr"/>
+<span class="font-['Inter'] font-semibold text-base tracking-tight text-on-background">Hi, Alex 👋</span>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors active:scale-95 text-blue-600 dark:text-blue-400">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</header>
+<!-- Desktop Header (Placeholder for Web View) -->
+<header class="hidden md:flex sticky top-0 z-50 items-center justify-between px-lg h-20 w-full bg-white dark:bg-slate-900 border-b border-slate-100 shadow-sm max-w-container-max mx-auto">
+<div class="text-xl font-black tracking-tighter text-blue-600 dark:text-blue-400">Skill Rent</div>
+<nav class="flex gap-lg">
+<a class="font-label-md text-primary font-bold" href="#">Home</a>
+<a class="font-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Browse</a>
+<a class="font-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Post</a>
+<a class="font-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Messages</a>
+<a class="font-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Profile</a>
+</nav>
+<div class="flex items-center gap-md">
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container transition-colors text-primary">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<img alt="User Profile" class="w-10 h-10 rounded-full object-cover" data-alt="Headshot of a smiling young man wearing a casual shirt, soft natural lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBsSyeqjaYOitmPPGKv45D-Rd0RixAhvo3Vp6wFzNdJy7K57K6e2fofeih93brDYbLMQIPRyRasvRtHkb6yqPe6rI50RIruEBtAsYbqO61FqyYSzkOaUTGebTbR6VGbW8CVy2ZWQWmw32stVZhYRVZeHlmlQ3RoDTyxHO8FjKKBG-cb9VQ5MTogjzoLLuQtqUO6EQDNLB40s-8NBq4IuI_pDLvVPR97bH6_mobKY0IQGaYMkDpm-FvZoztf4yJlmVANKKEV24mGZcXK"/>
+</div>
+</header>
+<main class="w-full max-w-md md:max-w-container-max mx-auto px-4 md:px-lg py-lg space-y-xl">
+<!-- Search Section -->
+<section class="space-y-sm">
+<h1 class="font-h2 text-on-background md:hidden">What do you need help with?</h1>
+<h1 class="font-h1 text-on-background hidden md:block mt-xl mb-lg">What do you need help with, Alex?</h1>
+<div class="relative w-full max-w-2xl">
+<div class="absolute inset-y-0 left-0 pl-sm flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-on-surface-variant">search</span>
+</div>
+<input class="w-full pl-xl pr-4 py-3 bg-surface-container-low border border-surface-variant rounded-lg font-body-md text-on-background placeholder-on-surface-variant focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all shadow-level-1" placeholder="Search for skills, services..." type="text"/>
+<button class="absolute inset-y-0 right-1 top-1 bottom-1 px-md bg-primary hover:bg-on-primary-fixed-variant text-on-primary rounded-md font-label-md transition-colors hidden sm:block">Search</button>
+</div>
+</section>
+<!-- Categories -->
+<section>
+<div class="flex gap-sm overflow-x-auto hide-scrollbar pb-xs">
+<button class="flex items-center gap-2 px-md py-2 bg-white rounded-full shadow-level-1 border border-surface-variant whitespace-nowrap hover:bg-surface-container transition-colors font-label-md text-on-background shrink-0">
+<span>🔧</span> Repair
+                </button>
+<button class="flex items-center gap-2 px-md py-2 bg-white rounded-full shadow-level-1 border border-surface-variant whitespace-nowrap hover:bg-surface-container transition-colors font-label-md text-on-background shrink-0">
+<span>📚</span> Tutoring
+                </button>
+<button class="flex items-center gap-2 px-md py-2 bg-white rounded-full shadow-level-1 border border-surface-variant whitespace-nowrap hover:bg-surface-container transition-colors font-label-md text-on-background shrink-0">
+<span>🎨</span> Design
+                </button>
+<button class="flex items-center gap-2 px-md py-2 bg-white rounded-full shadow-level-1 border border-surface-variant whitespace-nowrap hover:bg-surface-container transition-colors font-label-md text-on-background shrink-0">
+<span>🚗</span> Transport
+                </button>
+<button class="flex items-center gap-2 px-md py-2 bg-white rounded-full shadow-level-1 border border-surface-variant whitespace-nowrap hover:bg-surface-container transition-colors font-label-md text-on-background shrink-0">
+<span class="material-symbols-outlined text-[18px]">more_horiz</span> More
+                </button>
+</div>
+</section>
+<!-- Active Requests -->
+<section>
+<div class="flex items-center justify-between mb-md">
+<h2 class="font-h3 text-on-background">Your Active Requests</h2>
+<a class="font-label-md text-primary hover:text-on-primary-fixed-variant transition-colors" href="#">View All</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-md">
+<!-- Request Card 1 -->
+<div class="bg-white rounded-[16px] p-lg shadow-level-2 flex flex-col gap-sm border border-transparent dark:border-slate-800">
+<div class="flex justify-between items-start">
+<div>
+<span class="inline-block px-2 py-1 bg-surface-container-low text-on-surface-variant font-label-sm rounded-full mb-2">Plumbing</span>
+<h3 class="font-h3 text-[18px] leading-snug text-on-background">Fix leaking kitchen sink</h3>
+</div>
+<span class="font-label-md text-primary font-semibold">$50 - $80</span>
+</div>
+<div class="flex items-center justify-between mt-auto pt-sm border-t border-surface-variant">
+<div class="flex items-center gap-xs text-secondary-container font-label-sm">
+<span class="material-symbols-outlined text-[16px]">groups</span>
+                            3 applicants
+                        </div>
+<button class="font-label-sm text-primary hover:bg-primary-fixed py-1 px-3 rounded-lg transition-colors">Review</button>
+</div>
+</div>
+<!-- Request Card 2 -->
+<div class="bg-white rounded-[16px] p-lg shadow-level-2 flex flex-col gap-sm border border-transparent dark:border-slate-800">
+<div class="flex justify-between items-start">
+<div>
+<span class="inline-block px-2 py-1 bg-surface-container-low text-on-surface-variant font-label-sm rounded-full mb-2">Design</span>
+<h3 class="font-h3 text-[18px] leading-snug text-on-background">Logo design for bakery</h3>
+</div>
+<span class="font-label-md text-primary font-semibold">$150</span>
+</div>
+<div class="flex items-center justify-between mt-auto pt-sm border-t border-surface-variant">
+<div class="flex items-center gap-xs text-on-surface-variant font-label-sm">
+<span class="material-symbols-outlined text-[16px]">hourglass_empty</span>
+                            Awaiting bids
+                        </div>
+<button class="font-label-sm text-primary hover:bg-primary-fixed py-1 px-3 rounded-lg transition-colors">Edit</button>
+</div>
+</div>
+<!-- Add New Card (Desktop mostly) -->
+<button class="hidden md:flex bg-surface-container-low rounded-[16px] p-lg shadow-level-1 border-2 border-dashed border-outline-variant flex-col items-center justify-center gap-sm hover:bg-surface-container transition-colors group">
+<span class="material-symbols-outlined text-4xl text-outline-variant group-hover:text-primary transition-colors">add_circle</span>
+<span class="font-label-md text-on-surface-variant group-hover:text-primary transition-colors">Post a new request</span>
+</button>
+</div>
+</section>
+<!-- Nearby Freelancers -->
+<section>
+<div class="flex items-center justify-between mb-md">
+<h2 class="font-h3 text-on-background">Nearby Freelancers</h2>
+<a class="font-label-md text-primary hover:text-on-primary-fixed-variant transition-colors" href="#">Map View</a>
+</div>
+<div class="flex gap-md overflow-x-auto hide-scrollbar pb-lg -mx-4 px-4 md:mx-0 md:px-0">
+<!-- Freelancer Card 1 -->
+<div class="bg-white rounded-[16px] p-md shadow-level-2 border border-transparent dark:border-slate-800 min-w-[240px] flex flex-col gap-md snap-start">
+<div class="flex items-center gap-sm">
+<div class="relative">
+<img alt="Sarah J." class="w-12 h-12 rounded-full object-cover" data-alt="Headshot of a professional young woman with a warm smile, well-lit studio setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBagvesyTno9E8ogG_G-dGj_Voj5a7A1ZfciiDQjUalB9GgEdH4AZYUwFUon93VcLvD5lb4YcA_NHSr7x7APl5j3v96fVb70plUx-_1LcdIhuraWFISW0tN8rR0VXbtpQVH9puoxYWxGloyachd41X5u3sDRCXzfaSkxNDjJb4Lpkeo7ubGE8ZC50aoDz52sswVqHrKpkUdOJQRQGXiA-VpjoyPwFWh6lCg0OCPrDfj6TukJ8z0gYZ-tTUD8xam9RrSxmazYDbOkCB7"/>
+<div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></div>
+</div>
+<div>
+<h4 class="font-label-md text-on-background">Sarah J.</h4>
+<div class="flex items-center gap-1 text-tertiary-container font-label-sm">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+                                4.9 (120 reviews)
+                            </div>
+</div>
+</div>
+<div class="flex flex-wrap gap-1">
+<span class="px-2 py-1 bg-primary-fixed text-on-primary-fixed font-label-sm rounded-full text-[10px]">Graphic Design</span>
+<span class="px-2 py-1 bg-surface-container text-on-surface-variant font-label-sm rounded-full text-[10px]">UI/UX</span>
+</div>
+<button class="w-full mt-auto py-2 bg-surface-container-high hover:bg-surface-variant text-primary font-label-md rounded-lg transition-colors">View Profile</button>
+</div>
+<!-- Freelancer Card 2 -->
+<div class="bg-white rounded-[16px] p-md shadow-level-2 border border-transparent dark:border-slate-800 min-w-[240px] flex flex-col gap-md snap-start">
+<div class="flex items-center gap-sm">
+<div class="relative">
+<img alt="Michael T." class="w-12 h-12 rounded-full object-cover" data-alt="Headshot of a friendly middle-aged man wearing a practical work jacket, outdoor natural light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQBBK5H9L41RhJedjc290nnQUZMsP-NHc8mAt5qq0bFCl8Zapqj-tCQrGedxP3XDOXUCu9-UXNEe2m_M_wXQat4rZt9-zVf24fIahq8C490hTo2L8w8llNR49Eyw9iOBBh-Rp2VZRFa7ld6QyaMblu8Q3IFYUprmff303DbT4Mr7lPjJa7XISXgzW2gKXom8gk3AOfccWXlyQdcH1J2Sj_sqBhlXVkjlB3ITesVBRD2oPU4tAImrclafxavgm0-z6M-M46Kq2iRnuA"/>
+</div>
+<div>
+<h4 class="font-label-md text-on-background">Michael T.</h4>
+<div class="flex items-center gap-1 text-tertiary-container font-label-sm">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+                                4.8 (85 reviews)
+                            </div>
+</div>
+</div>
+<div class="flex flex-wrap gap-1">
+<span class="px-2 py-1 bg-primary-fixed text-on-primary-fixed font-label-sm rounded-full text-[10px]">Handyman</span>
+<span class="px-2 py-1 bg-surface-container text-on-surface-variant font-label-sm rounded-full text-[10px]">Assembly</span>
+</div>
+<button class="w-full mt-auto py-2 bg-surface-container-high hover:bg-surface-variant text-primary font-label-md rounded-lg transition-colors">View Profile</button>
+</div>
+<!-- Freelancer Card 3 -->
+<div class="bg-white rounded-[16px] p-md shadow-level-2 border border-transparent dark:border-slate-800 min-w-[240px] flex flex-col gap-md snap-start">
+<div class="flex items-center gap-sm">
+<div class="relative">
+<img alt="Elena R." class="w-12 h-12 rounded-full object-cover" data-alt="Headshot of an expressive young woman wearing glasses, creative indoor workspace lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJeDZRiAD0dlk1gMFvxI9ajHOIGN3X5ITuDUM7m4njFdJ5Uh8PJODqY-Lc3e8DXeVlIcFv8xfQJig219hz2NoJdUoocywiBz92XkWqhUqwnZoQx4Z39roDOggDq_l1dLAKZyuwX4uKqL5jTDqcQz8pO4eaInGuAjSslShCDntazw72lqwd6Lll9zJytsR1CY8EXbNfJWQxpmVptg1RRygUomYcwgXO6-xmaYxyiH7C-CoK8ryo62ZshZ9e5tpoFIGuKC8_v_Y8E0AM"/>
+<div class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></div>
+</div>
+<div>
+<h4 class="font-label-md text-on-background">Elena R.</h4>
+<div class="flex items-center gap-1 text-tertiary-container font-label-sm">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+                                5.0 (42 reviews)
+                            </div>
+</div>
+</div>
+<div class="flex flex-wrap gap-1">
+<span class="px-2 py-1 bg-primary-fixed text-on-primary-fixed font-label-sm rounded-full text-[10px]">Language Tutor</span>
+<span class="px-2 py-1 bg-surface-container text-on-surface-variant font-label-sm rounded-full text-[10px]">Spanish</span>
+</div>
+<button class="w-full mt-auto py-2 bg-surface-container-high hover:bg-surface-variant text-primary font-label-md rounded-lg transition-colors">View Profile</button>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 right-0 z-50 flex justify-around items-center h-20 px-2 pb-safe w-full max-w-md mx-auto bg-white/95 dark:bg-slate-900/95 backdrop-blur-md rounded-t-2xl shadow-[0_-4px_20px_rgba(0,0,0,0.05)] md:hidden">
+<button class="flex flex-col items-center justify-center text-blue-600 dark:text-blue-400 scale-110 transition-transform active:scale-90 duration-200">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="font-['Inter'] text-[10px] font-medium uppercase tracking-wider mt-1">Home</span>
+</button>
+<button class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 opacity-80 hover:text-blue-500 dark:hover:text-blue-300 active:scale-90 transition-all duration-200">
+<span class="material-symbols-outlined">explore</span>
+<span class="font-['Inter'] text-[10px] font-medium uppercase tracking-wider mt-1">Browse</span>
+</button>
+<button class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 opacity-80 hover:text-blue-500 dark:hover:text-blue-300 active:scale-90 transition-all duration-200">
+<span class="material-symbols-outlined">add_circle</span>
+<span class="font-['Inter'] text-[10px] font-medium uppercase tracking-wider mt-1">Post</span>
+</button>
+<button class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 opacity-80 hover:text-blue-500 dark:hover:text-blue-300 active:scale-90 transition-all duration-200">
+<span class="material-symbols-outlined">chat_bubble</span>
+<span class="font-['Inter'] text-[10px] font-medium uppercase tracking-wider mt-1">Messages</span>
+</button>
+<button class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 opacity-80 hover:text-blue-500 dark:hover:text-blue-300 active:scale-90 transition-all duration-200">
+<span class="material-symbols-outlined">person</span>
+<span class="font-['Inter'] text-[10px] font-medium uppercase tracking-wider mt-1">Profile</span>
+</button>
+</nav>
+</body></html>

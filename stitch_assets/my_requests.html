@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>My Requests - Skill Rent</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-background": "#191c23",
+                        "tertiary": "#9e4300",
+                        "on-surface": "#191c23",
+                        "primary": "#005bbf",
+                        "on-primary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "on-primary-fixed-variant": "#004493",
+                        "primary-fixed-dim": "#adc7ff",
+                        "on-secondary": "#ffffff",
+                        "inverse-on-surface": "#eff0fa",
+                        "inverse-surface": "#2d3038",
+                        "tertiary-fixed": "#ffdbcb",
+                        "on-secondary-fixed-variant": "#832600",
+                        "on-primary-fixed": "#001a41",
+                        "on-tertiary-fixed": "#341100",
+                        "on-tertiary-container": "#0e0200",
+                        "outline": "#727785",
+                        "surface-tint": "#005bc0",
+                        "error": "#ba1a1a",
+                        "on-primary-container": "#ffffff",
+                        "surface-container-low": "#f2f3fd",
+                        "surface": "#f9f9ff",
+                        "outline-variant": "#c1c6d6",
+                        "surface-container": "#ecedf7",
+                        "on-surface-variant": "#414754",
+                        "secondary-fixed": "#ffdbd0",
+                        "tertiary-fixed-dim": "#ffb691",
+                        "primary-fixed": "#d8e2ff",
+                        "secondary-container": "#fe6a34",
+                        "surface-container-highest": "#e0e2ec",
+                        "surface-dim": "#d8d9e3",
+                        "surface-bright": "#f9f9ff",
+                        "error-container": "#ffdad6",
+                        "inverse-primary": "#adc7ff",
+                        "background": "#f9f9ff",
+                        "on-secondary-fixed": "#390c00",
+                        "surface-container-high": "#e6e8f2",
+                        "primary-container": "#1a73e8",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-fixed-variant": "#783100",
+                        "on-secondary-container": "#5d1900",
+                        "on-tertiary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "tertiary-container": "#c55500",
+                        "secondary-fixed-dim": "#ffb59d",
+                        "surface-variant": "#e0e2ec",
+                        "secondary": "#ab3500"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base": "4px",
+                        "xxl": "48px",
+                        "lg": "24px",
+                        "md": "16px",
+                        "gutter": "24px",
+                        "xl": "32px",
+                        "xs": "8px",
+                        "container-max": "1280px",
+                        "sm": "12px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "h3": ["Inter"],
+                        "h1": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "h2": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "500" }],
+                        "label-sm": ["12px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "h3": ["24px", { "lineHeight": "1.3", "fontWeight": "600" }],
+                        "h1": ["40px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "h2": ["32px", { "lineHeight": "1.25", "letterSpacing": "-0.01em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { background-color: #F8F9FA; } /* Overriding base background for the requested color */
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="text-on-background font-body-md min-h-screen flex flex-col pb-20 md:pb-0">
+<!-- TopAppBar -->
+<header class="sticky top-0 z-50 flex items-center justify-between px-4 h-16 w-full max-w-md mx-auto bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800 shadow-sm hidden md:flex">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 rounded-full bg-surface-variant overflow-hidden">
+<img alt="User profile photo" class="w-full h-full object-cover" data-alt="close-up portrait of a smiling young professional man with short dark hair in a well-lit studio setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBKEc6KpgtfDjgjcoky3akTXi752zJ7tg7aYlyQqIUxs9ljL9xae6IB_UchC_22Mjj_3eHFL1S2dk1gjbBNjDcTk4_Bc4ut0Wv9220JD9_HROZSNGPpGuCkUit-5BQJNJvXTep0Fj1zeDA-6ty_H3dnL8mEQxjpq1nzxlbEJvs0PsYpDHfKrE_ibkqnSAOgvQlxEOFWJ9jlx4tnWZcmy2k8hXEVdqGKFnP5pTmf417duXfbXzaLJe7pba2eihi-lUULi0HY-Uj_9URC"/>
+</div>
+</div>
+<div class="text-xl font-black tracking-tighter text-blue-600 dark:text-blue-400">Skill Rent</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors active:scale-95 transition-transform duration-150 text-slate-400 dark:text-slate-500">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 w-full max-w-container-max mx-auto px-lg py-lg space-y-lg">
+<div class="flex items-center justify-between">
+<h1 class="font-h2 text-h2 text-on-surface">My Requests</h1>
+<button class="bg-primary text-on-primary font-label-md text-label-md px-md py-sm rounded-lg shadow-[0_4px_20px_rgba(0,0,0,0.05)] flex items-center gap-xs hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                New Request
+            </button>
+</div>
+<!-- Filter/Tabs -->
+<div class="flex gap-sm overflow-x-auto pb-sm scrollbar-hide">
+<button class="px-md py-sm rounded-full bg-primary-container text-on-primary-container font-label-sm text-label-sm whitespace-nowrap">All Requests</button>
+<button class="px-md py-sm rounded-full bg-surface text-on-surface-variant border border-outline-variant font-label-sm text-label-sm whitespace-nowrap">Active</button>
+<button class="px-md py-sm rounded-full bg-surface text-on-surface-variant border border-outline-variant font-label-sm text-label-sm whitespace-nowrap">Completed</button>
+</div>
+<!-- Requests Grid/List -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-md">
+<!-- Card 1: Waiting applicants -->
+<div class="bg-white rounded-[16px] p-lg shadow-[0_4px_20px_rgba(0,0,0,0.05)] border border-transparent dark:border-slate-800 flex flex-col gap-md relative overflow-hidden group">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-full bg-tertiary-fixed flex items-center justify-center text-on-tertiary-fixed">
+<span class="material-symbols-outlined">plumbing</span>
+</div>
+<div>
+<h3 class="font-label-md text-label-md text-on-surface">Fix leaking kitchen sink</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant">2 hours ago</p>
+</div>
+</div>
+<!-- Status Badge -->
+<div class="bg-yellow-100 text-yellow-800 px-sm py-[2px] rounded-full font-label-sm text-[10px] flex items-center gap-xs">
+                        Waiting applicants
+                    </div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-2">Need a plumber to fix a persistent leak under the kitchen sink. Suspect it's the P-trap.</p>
+<div class="mt-auto pt-sm border-t border-surface-variant flex justify-between items-center">
+<span class="font-label-md text-label-md text-primary font-semibold">$50 - $80</span>
+<button class="text-tertiary font-label-sm text-label-sm hover:underline">Edit Request</button>
+</div>
+</div>
+<!-- Card 2: 3 applicants -->
+<div class="bg-white rounded-[16px] p-lg shadow-[0_4px_20px_rgba(0,0,0,0.05)] border border-transparent dark:border-slate-800 flex flex-col gap-md relative overflow-hidden">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-full bg-primary-fixed-dim flex items-center justify-center text-on-primary-fixed">
+<span class="material-symbols-outlined">design_services</span>
+</div>
+<div>
+<h3 class="font-label-md text-label-md text-on-surface">Logo Design for Cafe</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant">1 day ago</p>
+</div>
+</div>
+<!-- Status Badge -->
+<div class="bg-blue-100 text-blue-800 px-sm py-[2px] rounded-full font-label-sm text-[10px] flex items-center gap-xs">
+                        3 applicants
+                    </div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-2">Looking for a minimalist logo design for a new modern coffee shop opening downtown.</p>
+<div class="mt-auto pt-sm border-t border-surface-variant flex justify-between items-center">
+<span class="font-label-md text-label-md text-primary font-semibold">$150 fixed</span>
+<button class="bg-primary text-on-primary font-label-sm text-label-sm px-sm py-xs rounded-lg hover:opacity-90">Review</button>
+</div>
+</div>
+<!-- Card 3: In progress -->
+<div class="bg-white rounded-[16px] p-lg shadow-[0_4px_20px_rgba(0,0,0,0.05)] border border-transparent dark:border-slate-800 flex flex-col gap-md relative overflow-hidden">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-on-surface">
+<span class="material-symbols-outlined">laptop_mac</span>
+</div>
+<div>
+<h3 class="font-label-md text-label-md text-on-surface">React Developer for 1 week</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant">3 days ago</p>
+</div>
+</div>
+<!-- Status Badge -->
+<div class="bg-green-100 text-green-800 px-sm py-[2px] rounded-full font-label-sm text-[10px] flex items-center gap-xs">
+                        In progress
+                    </div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-2">Need an experienced React dev to help finish a dashboard UI. Connecting to existing APIs.</p>
+<div class="mt-auto pt-sm border-t border-surface-variant flex justify-between items-center">
+<span class="font-label-md text-label-md text-primary font-semibold">$40/hr</span>
+<button class="text-on-surface-variant font-label-sm text-label-sm hover:underline flex items-center gap-xs"><span class="material-symbols-outlined text-[16px]">chat</span> Message</button>
+</div>
+</div>
+<!-- Card 4: Completed -->
+<div class="bg-white rounded-[16px] p-lg shadow-[0_4px_20px_rgba(0,0,0,0.05)] border border-transparent dark:border-slate-800 flex flex-col gap-md relative overflow-hidden opacity-75">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">translate</span>
+</div>
+<div>
+<h3 class="font-label-md text-label-md text-on-surface line-through decoration-outline-variant">Translate legal document</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant">2 weeks ago</p>
+</div>
+</div>
+<!-- Status Badge -->
+<div class="bg-slate-100 text-slate-600 px-sm py-[2px] rounded-full font-label-sm text-[10px] flex items-center gap-xs">
+<span class="material-symbols-outlined text-[12px]">check</span> Completed
+                    </div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-2">Translate a 5-page NDA from English to Spanish. Requires legal translation experience.</p>
+<div class="mt-auto pt-sm border-t border-surface-variant flex justify-between items-center">
+<span class="font-label-md text-label-md text-outline font-semibold">$75 fixed</span>
+<button class="text-tertiary font-label-sm text-label-sm hover:underline">Leave Review</button>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 right-0 z-50 flex justify-around items-center h-20 px-2 pb-safe w-full max-w-md mx-auto bg-white/95 dark:bg-slate-900/95 backdrop-blur-md rounded-t-2xl shadow-[0_-4px_20px_rgba(0,0,0,0.05)] md:hidden border-t border-slate-100 dark:border-slate-800">
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 opacity-80 hover:text-blue-500 dark:hover:text-blue-300 active:scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-['Inter'] text-[10px] font-medium uppercase tracking-wider mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 opacity-80 hover:text-blue-500 dark:hover:text-blue-300 active:scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">explore</span>
+<span class="font-['Inter'] text-[10px] font-medium uppercase tracking-wider mt-1">Browse</span>
+</a>
+<a class="flex flex-col items-center justify-center text-blue-600 dark:text-blue-400 scale-110 transition-transform active:scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined fill">add_circle</span>
+<span class="font-['Inter'] text-[10px] font-medium uppercase tracking-wider mt-1">Post</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 opacity-80 hover:text-blue-500 dark:hover:text-blue-300 active:scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">chat_bubble</span>
+<span class="font-['Inter'] text-[10px] font-medium uppercase tracking-wider mt-1">Messages</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 opacity-80 hover:text-blue-500 dark:hover:text-blue-300 active:scale-90 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-['Inter'] text-[10px] font-medium uppercase tracking-wider mt-1">Profile</span>
+</a>
+</nav>
+</body></html>

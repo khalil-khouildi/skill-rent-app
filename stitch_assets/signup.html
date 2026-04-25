@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Skill Rent - Sign Up</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-background": "#191c23",
+                        "tertiary": "#9e4300",
+                        "on-surface": "#191c23",
+                        "primary": "#005bbf",
+                        "on-primary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "on-primary-fixed-variant": "#004493",
+                        "primary-fixed-dim": "#adc7ff",
+                        "on-secondary": "#ffffff",
+                        "inverse-on-surface": "#eff0fa",
+                        "inverse-surface": "#2d3038",
+                        "tertiary-fixed": "#ffdbcb",
+                        "on-secondary-fixed-variant": "#832600",
+                        "on-primary-fixed": "#001a41",
+                        "on-tertiary-fixed": "#341100",
+                        "on-tertiary-container": "#0e0200",
+                        "outline": "#727785",
+                        "surface-tint": "#005bc0",
+                        "error": "#ba1a1a",
+                        "on-primary-container": "#ffffff",
+                        "surface-container-low": "#f2f3fd",
+                        "surface": "#f9f9ff",
+                        "outline-variant": "#c1c6d6",
+                        "surface-container": "#ecedf7",
+                        "on-surface-variant": "#414754",
+                        "secondary-fixed": "#ffdbd0",
+                        "tertiary-fixed-dim": "#ffb691",
+                        "primary-fixed": "#d8e2ff",
+                        "secondary-container": "#fe6a34",
+                        "surface-container-highest": "#e0e2ec",
+                        "surface-dim": "#d8d9e3",
+                        "surface-bright": "#f9f9ff",
+                        "error-container": "#ffdad6",
+                        "inverse-primary": "#adc7ff",
+                        "background": "#f9f9ff",
+                        "on-secondary-fixed": "#390c00",
+                        "surface-container-high": "#e6e8f2",
+                        "primary-container": "#1a73e8",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-fixed-variant": "#783100",
+                        "on-secondary-container": "#5d1900",
+                        "on-tertiary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "tertiary-container": "#c55500",
+                        "secondary-fixed-dim": "#ffb59d",
+                        "surface-variant": "#e0e2ec",
+                        "secondary": "#ab3500"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base": "4px",
+                        "xxl": "48px",
+                        "lg": "24px",
+                        "md": "16px",
+                        "gutter": "24px",
+                        "xl": "32px",
+                        "xs": "8px",
+                        "container-max": "1280px",
+                        "sm": "12px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "h3": ["Inter"],
+                        "h1": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "h2": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "500" }],
+                        "label-sm": ["12px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "h3": ["24px", { "lineHeight": "1.3", "fontWeight": "600" }],
+                        "h1": ["40px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "h2": ["32px", { "lineHeight": "1.25", "letterSpacing": "-0.01em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface antialiased min-h-screen flex flex-col justify-center items-center p-lg">
+<main class="w-full max-w-[480px] bg-surface-container-lowest rounded-xl shadow-[0px_4px_20px_rgba(0,0,0,0.05)] p-xl border border-surface-variant/50">
+<div class="text-center mb-xl">
+<h1 class="font-h2 text-h2 text-primary mb-xs">Skill Rent</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Create an account to join our marketplace.</p>
+</div>
+<form class="flex flex-col gap-lg">
+<div class="flex justify-center mb-sm">
+<div class="relative w-24 h-24 rounded-full bg-surface-container-high border-2 border-dashed border-outline-variant flex items-center justify-center cursor-pointer hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-outline text-3xl">photo_camera</span>
+<div class="absolute inset-0 rounded-full flex items-center justify-center bg-black/40 opacity-0 hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-on-primary text-xl">upload</span>
+</div>
+</div>
+</div>
+<fieldset class="flex flex-col gap-xs">
+<legend class="font-label-md text-label-md text-on-surface-variant mb-xs">I am a:</legend>
+<div class="flex gap-sm">
+<label class="flex-1 cursor-pointer">
+<input checked="" class="peer sr-only" name="role" type="radio" value="client"/>
+<div class="px-sm py-xs rounded-full border border-outline-variant text-center font-label-md text-label-md text-on-surface-variant peer-checked:bg-primary-container peer-checked:text-on-primary-container peer-checked:border-primary-container transition-all">
+                            Client
+                        </div>
+</label>
+<label class="flex-1 cursor-pointer">
+<input class="peer sr-only" name="role" type="radio" value="freelancer"/>
+<div class="px-sm py-xs rounded-full border border-outline-variant text-center font-label-md text-label-md text-on-surface-variant peer-checked:bg-primary-container peer-checked:text-on-primary-container peer-checked:border-primary-container transition-all">
+                            Freelancer
+                        </div>
+</label>
+<label class="flex-1 cursor-pointer">
+<input class="peer sr-only" name="role" type="radio" value="both"/>
+<div class="px-sm py-xs rounded-full border border-outline-variant text-center font-label-md text-label-md text-on-surface-variant peer-checked:bg-primary-container peer-checked:text-on-primary-container peer-checked:border-primary-container transition-all">
+                            Both
+                        </div>
+</label>
+</div>
+</fieldset>
+<div class="flex flex-col gap-xs">
+<label class="font-label-md text-label-md text-on-surface-variant" for="fullName">Full Name</label>
+<input class="w-full px-md py-sm rounded-lg bg-surface border border-outline-variant text-on-surface focus:border-primary focus:ring-1 focus:ring-primary font-body-md text-body-md transition-colors placeholder:text-outline-variant" id="fullName" placeholder="John Doe" type="text"/>
+</div>
+<div class="flex flex-col gap-xs">
+<label class="font-label-md text-label-md text-on-surface-variant" for="email">Email</label>
+<input class="w-full px-md py-sm rounded-lg bg-surface border border-outline-variant text-on-surface focus:border-primary focus:ring-1 focus:ring-primary font-body-md text-body-md transition-colors placeholder:text-outline-variant" id="email" placeholder="john@example.com" type="email"/>
+</div>
+<div class="flex flex-col gap-xs">
+<label class="font-label-md text-label-md text-on-surface-variant" for="password">Password</label>
+<div class="relative">
+<input class="w-full pl-md pr-10 py-sm rounded-lg bg-surface border border-outline-variant text-on-surface focus:border-primary focus:ring-1 focus:ring-primary font-body-md text-body-md transition-colors placeholder:text-outline-variant" id="password" placeholder="••••••••" type="password"/>
+<button class="absolute inset-y-0 right-0 flex items-center pr-md text-outline hover:text-on-surface-variant" type="button">
+<span class="material-symbols-outlined text-xl">visibility_off</span>
+</button>
+</div>
+</div>
+<button class="mt-md w-full py-sm px-lg bg-primary-container text-on-primary-container rounded-lg font-label-md text-label-md hover:bg-primary hover:text-on-primary transition-colors focus:ring-2 focus:ring-primary focus:ring-offset-2" type="submit">
+                Create Account
+            </button>
+</form>
+<div class="mt-xl text-center">
+<p class="font-body-md text-body-md text-on-surface-variant">
+                Already have an account? 
+                <a class="font-label-md text-label-md text-primary hover:text-primary-fixed-variant underline decoration-transparent hover:decoration-current transition-all" href="#">Sign In</a>
+</p>
+</div>
+</main>
+</body></html>

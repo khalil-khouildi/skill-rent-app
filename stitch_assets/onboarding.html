@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Skill Rent - Onboarding</title>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "primary": "#ec5b13",
+          "background-light": "#f8f6f6",
+          "background-dark": "#221610",
+        },
+        fontFamily: {
+          "display": ["Public Sans"]
+        },
+        borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+      },
+    },
+  }
+</script>
+<style>
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  }
+</style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light font-display text-background-dark min-h-screen flex flex-col justify-between">
+<!-- Header / Nav Exclusion: This is an onboarding flow (focused view), so standard TopAppBar/BottomNavBar are excluded. -->
+<header class="flex items-center p-4">
+<button aria-label="Go back" class="flex items-center justify-center p-2 text-background-dark/70 hover:text-background-dark rounded-full transition-colors">
+<span class="material-symbols-outlined text-2xl" data-icon="arrow_back">arrow_back</span>
+</button>
+</header>
+<!-- Main Carousel Content -->
+<main class="flex-1 flex flex-col items-center justify-center px-6 w-full max-w-md mx-auto relative overflow-hidden">
+<!-- Slide Container (Conceptual Carousel) -->
+<div class="w-full flex transition-transform duration-300 ease-in-out snap-x snap-mandatory overflow-x-auto hide-scrollbar" style="scroll-behavior: smooth;">
+<!-- Slide 1: Post your need -->
+<div class="w-full flex-shrink-0 snap-center flex flex-col items-center justify-center gap-8 py-8">
+<div class="w-64 h-64 sm:w-80 sm:h-80 bg-background-light rounded-2xl overflow-hidden shadow-sm relative flex items-center justify-center">
+<div class="absolute inset-0 bg-primary/5 rounded-2xl"></div>
+<!-- Illustration representing posting a task on a phone -->
+<div class="w-full h-full bg-cover bg-center rounded-2xl" data-alt="Modern flat style illustration of a person confidently typing on a smartphone, posting a task request, vibrant brand colors, clean white background, soft shadows" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAo02-sft44s114mFpBbxNu2LrLDNb25-A9ONUO5WKxOySguJ8Hj85gxqZV7-kzJDkTWRe20MZiA5_dYRmr_B_MDOR67J_kn-1zfYuP8CToF2ZnZjVeD_pFK2ABwYV4-z-pq1Un3FFfrvlzmzMYwfQdL9laznZZbiCpnGh8H0quDMLVzPkqozNkEjphnSwbTeRL8b289LCVq9QCHa4jMwljdNNZ7MbsmTi75M37Zd9yHJwBh985DyyZ9jv5bWcfMpj-0alv8rtN462q");'></div>
+</div>
+<div class="text-center space-y-3 px-4">
+<h1 class="text-2xl sm:text-3xl font-bold text-background-dark tracking-tight">Post your need</h1>
+<p class="text-base sm:text-lg text-background-dark/70 leading-relaxed max-w-[280px] mx-auto">
+            Describe what you need help with. It's quick, easy, and completely free.
+          </p>
+</div>
+</div>
+<!-- Slide 2: Get applicants (Preview / Next step indication) -->
+<div class="w-full flex-shrink-0 snap-center flex flex-col items-center justify-center gap-8 py-8 opacity-40 scale-95 transition-all">
+<div class="w-64 h-64 sm:w-80 sm:h-80 bg-background-light rounded-2xl overflow-hidden shadow-sm relative flex items-center justify-center">
+<div class="absolute inset-0 bg-primary/5 rounded-2xl"></div>
+<div class="w-full h-full bg-cover bg-center rounded-2xl" data-alt="Modern illustration showing multiple diverse people profiles or avatars popping up around a document, signifying receiving applications, clean style" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBj-it1Wk3hHqx5CzfdOZeqKctf0F3jGWrISNxvWVGxJ9ajUMcn78SPas0wrQhZ5SbcoqhMIYCwFjDeqy1dewtwlZnWtYSh1He-7RQlunNe_fVgOz5shxdpfD9o-crHSpj_v_LiNe9oPhmAdWPyrFP3pZMgsOf6BzopXBjYr-ZGaFQBCIe9SnrrNytWXHNImtWuQVyriuqBtOZI8FSJ4uvAaRqaSJmMguBW55uBGPg5LiGcGp3MCM7IdqWdyRpbMhoL2ilmDxSRiICU");'></div>
+</div>
+<div class="text-center space-y-3 px-4">
+<h2 class="text-2xl sm:text-3xl font-bold text-background-dark tracking-tight">Get applicants</h2>
+<p class="text-base sm:text-lg text-background-dark/70 leading-relaxed max-w-[280px] mx-auto">
+              Review offers from skilled professionals ready to help.
+            </p>
+</div>
+</div>
+<!-- Slide 3: Get it done (Preview / Next step indication) -->
+<div class="w-full flex-shrink-0 snap-center flex flex-col items-center justify-center gap-8 py-8 opacity-40 scale-95 transition-all">
+<div class="w-64 h-64 sm:w-80 sm:h-80 bg-background-light rounded-2xl overflow-hidden shadow-sm relative flex items-center justify-center">
+<div class="absolute inset-0 bg-primary/5 rounded-2xl"></div>
+<div class="w-full h-full bg-cover bg-center rounded-2xl" data-alt="Modern illustration of a completed task checklist with a green checkmark and a happy person, symbolizing task completion, minimalist style" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDqczdzU1S-zLbasSZ4N_xkcM5EEZ05MjgG78RLX1iKWz89HdN77Jc3ChBXnBF9toyWudZ54tCjQMzL5PPcJv-7A2HD411Xxje0qQPaAFxqWH6i3NEfY4pdc5TLq2PVkCnleVky7ShvK8R3zz4OVNPJNU5NDffs4hO97JkCuczRDkQME4RQSWRSkOIMnZdYj9xuWTctNjNC5myE61hXkdBXmg8G6U5CydidqyxgzL271vCJYRHq97FOo0VrjEivC4-6PRhTr3H_eSa2");'></div>
+</div>
+<div class="text-center space-y-3 px-4">
+<h2 class="text-2xl sm:text-3xl font-bold text-background-dark tracking-tight">Get it done</h2>
+<p class="text-base sm:text-lg text-background-dark/70 leading-relaxed max-w-[280px] mx-auto">
+              Choose the best fit and watch your task get completed smoothly.
+            </p>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation / Controls -->
+<footer class="w-full max-w-md mx-auto px-6 pb-8 pt-4 bg-background-light">
+<!-- Progress Dots -->
+<div class="flex justify-center items-center gap-2 mb-8">
+<div class="h-2 w-8 rounded-full bg-primary transition-all duration-300"></div>
+<div class="h-2 w-2 rounded-full bg-background-dark/20 transition-all duration-300"></div>
+<div class="h-2 w-2 rounded-full bg-background-dark/20 transition-all duration-300"></div>
+</div>
+<!-- Actions -->
+<div class="flex items-center justify-between">
+<button class="px-4 py-3 text-background-dark/60 font-semibold hover:text-background-dark transition-colors duration-200">
+        Skip
+      </button>
+<button class="flex items-center justify-center gap-2 bg-primary text-white px-8 py-3.5 rounded-xl font-bold shadow-sm hover:bg-primary/90 hover:shadow-md transition-all duration-200 active:scale-[0.98]">
+        Next
+        <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</footer>
+<style>
+    /* Utility to hide scrollbar for the carousel container if users try to swipe */
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .hide-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</body></html>

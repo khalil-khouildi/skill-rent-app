@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Messages - SkillRent</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-container-low": "#f2f3fd",
+                        "on-tertiary": "#ffffff",
+                        "primary-fixed-dim": "#adc7ff",
+                        "primary-fixed": "#d8e2ff",
+                        "on-tertiary-container": "#0e0200",
+                        "tertiary-container": "#c55500",
+                        "surface-bright": "#f9f9ff",
+                        "surface-container-high": "#e6e8f2",
+                        "on-primary": "#ffffff",
+                        "on-surface-variant": "#414754",
+                        "surface-container-highest": "#e0e2ec",
+                        "surface": "#f9f9ff",
+                        "on-secondary-fixed": "#390c00",
+                        "on-error": "#ffffff",
+                        "surface-container": "#ecedf7",
+                        "surface-dim": "#d8d9e3",
+                        "surface-container-lowest": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "tertiary": "#9e4300",
+                        "primary-container": "#1a73e8",
+                        "outline": "#727785",
+                        "on-background": "#191c23",
+                        "on-secondary-fixed-variant": "#832600",
+                        "on-primary-fixed-variant": "#004493",
+                        "background": "#f9f9ff",
+                        "on-secondary": "#ffffff",
+                        "outline-variant": "#c1c6d6",
+                        "tertiary-fixed": "#ffdbcb",
+                        "secondary-fixed": "#ffdbd0",
+                        "on-tertiary-fixed-variant": "#783100",
+                        "on-primary-container": "#ffffff",
+                        "on-surface": "#191c23",
+                        "on-primary-fixed": "#001a41",
+                        "inverse-primary": "#adc7ff",
+                        "surface-tint": "#005bc0",
+                        "tertiary-fixed-dim": "#ffb691",
+                        "on-error-container": "#93000a",
+                        "secondary-container": "#fe6a34",
+                        "on-tertiary-fixed": "#341100",
+                        "error": "#ba1a1a",
+                        "inverse-on-surface": "#eff0fa",
+                        "secondary": "#ab3500",
+                        "secondary-fixed-dim": "#ffb59d",
+                        "primary": "#005bbf",
+                        "inverse-surface": "#2d3038",
+                        "surface-variant": "#e0e2ec",
+                        "on-secondary-container": "#5d1900"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px",
+                        "card": "16px"
+                    },
+                    spacing: {
+                        "sm": "12px",
+                        "gutter": "24px",
+                        "base": "4px",
+                        "lg": "24px",
+                        "xl": "32px",
+                        "xxl": "48px",
+                        "xs": "8px",
+                        "md": "16px",
+                        "container-max": "1280px"
+                    },
+                    fontFamily: {
+                        "h2": ["Inter"],
+                        "h3": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "h1": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    fontSize: {
+                        "h2": ["32px", { "lineHeight": "1.25", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "h3": ["24px", { "lineHeight": "1.3", "fontWeight": "600" }],
+                        "label-sm": ["12px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "500" }],
+                        "h1": ["40px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #F8F9FA; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-[#F8F9FA] text-on-surface min-h-screen flex flex-col pb-[80px] md:pb-0">
+<!-- TopAppBar -->
+<header class="bg-white dark:bg-slate-900 docked full-width top-0 border-b border-slate-100 dark:border-slate-800 shadow-sm flex justify-between items-center w-full px-4 h-16 sticky z-50">
+<div class="flex items-center gap-4">
+<img alt="User Profile Avatar" class="w-8 h-8 rounded-full border border-outline-variant" data-alt="professional headshot of user smiling in modern office setting with blurred background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-_q6FGMsKTPTEZH_TX2b4mAB2LyfVuktQhNmQV0rcnXULb8NNtJixeGeHtYsmVIJ0vQw_5o3MAQWjDisOSnrfqWA9QAvsuSP_pPM2gY7Eii8o-FQrQVDXBmKtXgFKDo_MO2Cqs1N5Ny3aj7o8UYxc0wHNhK-gETA9zTELDEjl1T2RUXSjSo7oxsEgNrKEM9Ibeg8xGCqIoXPsTFdRER3mwMbWYIMgtD04r5DCW3TsNZ9tm8IuBVGeOxgFPzwKd_98Kp_Yn7NhnqbN"/>
+</div>
+<div class="text-xl font-black tracking-tight text-blue-700 dark:text-blue-400">SkillRent</div>
+<div class="flex items-center">
+<button class="text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors p-2 rounded-full active:opacity-80 transition-opacity">
+<span class="material-symbols-outlined">search</span>
+</button>
+</div>
+</header>
+<main class="flex-1 w-full max-w-container-max mx-auto px-4 md:px-gutter py-lg">
+<div class="mb-lg">
+<h1 class="font-h1 text-h1 text-on-surface mb-xs">Messages</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Stay connected with your experts and clients.</p>
+</div>
+<div class="relative mb-lg">
+<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline">search</span>
+</div>
+<input class="w-full bg-surface-container-low border-none rounded-[12px] py-3 pl-12 pr-4 font-body-md text-body-md text-on-surface placeholder:text-outline focus:ring-2 focus:ring-primary-container focus:outline-none transition-shadow shadow-[0_1px_2px_rgba(0,0,0,0.05)]" placeholder="Search conversations..." type="text"/>
+</div>
+<!-- Conversation List -->
+<div class="flex flex-col gap-4">
+<!-- Message Item 1 (Unread) -->
+<div class="bg-white rounded-[16px] p-4 flex items-center gap-4 cursor-pointer hover:bg-surface-bright transition-colors shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+<div class="relative">
+<img alt="Ahmed" class="w-14 h-14 rounded-full object-cover" data-alt="portrait of ahmed smiling brightly with a clear blue sky background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVCjHfZMiuAQY6KqlccfVgzTfYlbShK0FwvYRWKrmWvJaWppMLdmmgYIdb24zAvaHgU52r9ANnuP9FamqP4uf2QkZrHTljI7rt1sX5uSbUx80NBTZcWTD33osw2qzV8QFDtQClM3BzSv0QiEcXAYhNmBIzp9Ck2A69e_Z-3W9nkWlRr7TEDVTcQ92e7KQ_0REVUuBqZnk6ZhnpEdDDRoSiB9F9qtvVe9p-28UjX0X3wY2YzQm9v-rF9vohuTJPo_8GrapADO0TaXlB"/>
+<div class="absolute bottom-0 right-0 w-4 h-4 bg-primary-container rounded-full border-2 border-white"></div>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-baseline mb-1">
+<h3 class="font-label-md text-label-md text-on-surface font-semibold truncate">Ahmed</h3>
+<span class="font-label-sm text-label-sm text-primary-container">10:42 AM</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface font-medium truncate">I'll be there in 15 minutes to fix the plumbing.</p>
+</div>
+</div>
+<!-- Message Item 2 (Read) -->
+<div class="bg-white rounded-[16px] p-4 flex items-center gap-4 cursor-pointer hover:bg-surface-bright transition-colors shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+<img alt="Sara" class="w-14 h-14 rounded-full object-cover" data-alt="professional headshot of sara wearing glasses in a modern studio" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBH5muSqkfpz05QJTFeb7CONs1BYBJ_dm47zImzzpRu7uC1xgGVjN8gSPB-DOk5FXadpWM_z3pgeWucwIQb6UNXoZOjiPDkuiynoEIpRVj20gG7edtfUIbH0pN212TL8JjFoc_HzovvqqH6uBFs-2DSpJu6crn2pj_ev9Q5DqMqLPQEm3mFG_nqX0IOYMIW1_EZDXUFzcR60-bUrOJONJR9wvHBrA_F9S6kp9tsAip309MBxDBvF6APdcF4rhTLEBqWQBcC1peMwhZT"/>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-baseline mb-1">
+<h3 class="font-label-md text-label-md text-on-surface truncate">Sara</h3>
+<span class="font-label-sm text-label-sm text-outline">Yesterday</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant truncate">Thanks for the design files! Looks great.</p>
+</div>
+</div>
+<!-- Message Item 3 (Unread) -->
+<div class="bg-white rounded-[16px] p-4 flex items-center gap-4 cursor-pointer hover:bg-surface-bright transition-colors shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
+<div class="relative">
+<img alt="Karim" class="w-14 h-14 rounded-full object-cover" data-alt="casual photo of karim outdoors holding a camera" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJvNgUorVfV99r47jk44bHsiL6jg7W-h_LhtnqT-dzCK9RL5sNCAtRsM9V8-7gOaM6oegE8994lzXc4k80qpvSj8cuR6c5TAyQZppQM611_wumUqQPMiT51T7y26zr0J1IK-Vl8IRyofOFTy36SHL3dofnotwn9u6NC5P5i80RYrwd92HAeqSJ36usCrHYxQuWaaE4Y690R1W1LkaEdv_EiHkvZ8ZEEMMhYAmrLux16TOKGgDJQYxasu3bXwE9-pZqvhmOhsixQOkw"/>
+<div class="absolute bottom-0 right-0 w-4 h-4 bg-secondary-container rounded-full border-2 border-white"></div>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-baseline mb-1">
+<h3 class="font-label-md text-label-md text-on-surface font-semibold truncate">Karim</h3>
+<span class="font-label-sm text-label-sm text-secondary-container">Tuesday</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface font-medium truncate">Can we reschedule our meeting to tomorrow?</p>
+</div>
+</div>
+<!-- Message Item 4 (Read) -->
+<div class="bg-white rounded-[16px] p-4 flex items-center gap-4 cursor-pointer hover:bg-surface-bright transition-colors shadow-[0_4px_20px_rgba(0,0,0,0.05)] opacity-80">
+<img alt="Emma" class="w-14 h-14 rounded-full object-cover" data-alt="portrait of emma smiling gently against a plain light background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBHacCehP03aVCFUind2YXjXkKprMA2AuUePAtyzdw7WguACXgR5gSA0_1D8QKNfSK-gKPaGuKidk8zJZxODgeMFBJ2jQkBDObdK0TWR_Nwq56LxqMWC-J8TPxoBm7DanrgR3CCIW8jIaI_3-nmscCHk8RdJfGQOUWt7TXVi0HJUuQ4KLb6A7-_xpN6KQJOif2HyCj2mDYws-VHT7Qp8xOmELH555fx9qRxndjJpNHrA3ZIov4gmoX_Ru_YeNF6xIVFte4idVZBXRoR"/>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-baseline mb-1">
+<h3 class="font-label-md text-label-md text-on-surface truncate">Emma</h3>
+<span class="font-label-sm text-label-sm text-outline">Mon</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant truncate">Payment received. Thank you!</p>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="md:hidden bg-white/95 dark:bg-slate-900/95 backdrop-blur-md docked full-width bottom-0 z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] fixed left-0 w-full flex justify-around items-center px-2 py-3 pb-safe">
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 hover:text-blue-600 dark:hover:text-blue-300 Active: transform scale-95 duration-100" href="#">
+<span class="material-symbols-outlined mb-1">explore</span>
+<span class="font-['Inter'] text-[11px] font-medium">Explore</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 hover:text-blue-600 dark:hover:text-blue-300 Active: transform scale-95 duration-100" href="#">
+<span class="material-symbols-outlined mb-1">assignment_turned_in</span>
+<span class="font-['Inter'] text-[11px] font-medium">Missions</span>
+</a>
+<a class="flex flex-col items-center justify-center text-blue-700 dark:text-blue-400 scale-110 transition-transform Active: transform scale-95 duration-100" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">chat_bubble</span>
+<span class="font-['Inter'] text-[11px] font-medium text-blue-700 dark:text-blue-400">Messages</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 hover:text-blue-600 dark:hover:text-blue-300 Active: transform scale-95 duration-100" href="#">
+<span class="material-symbols-outlined mb-1">person</span>
+<span class="font-['Inter'] text-[11px] font-medium">Profile</span>
+</a>
+</nav>
+</body></html>

@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Browse Requests - Skill Rent</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-background": "#191c23",
+                        "tertiary": "#9e4300",
+                        "on-surface": "#191c23",
+                        "primary": "#005bbf",
+                        "on-primary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "on-primary-fixed-variant": "#004493",
+                        "primary-fixed-dim": "#adc7ff",
+                        "on-secondary": "#ffffff",
+                        "inverse-on-surface": "#eff0fa",
+                        "inverse-surface": "#2d3038",
+                        "tertiary-fixed": "#ffdbcb",
+                        "on-secondary-fixed-variant": "#832600",
+                        "on-primary-fixed": "#001a41",
+                        "on-tertiary-fixed": "#341100",
+                        "on-tertiary-container": "#0e0200",
+                        "outline": "#727785",
+                        "surface-tint": "#005bc0",
+                        "error": "#ba1a1a",
+                        "on-primary-container": "#ffffff",
+                        "surface-container-low": "#f2f3fd",
+                        "surface": "#f9f9ff",
+                        "outline-variant": "#c1c6d6",
+                        "surface-container": "#ecedf7",
+                        "on-surface-variant": "#414754",
+                        "secondary-fixed": "#ffdbd0",
+                        "tertiary-fixed-dim": "#ffb691",
+                        "primary-fixed": "#d8e2ff",
+                        "secondary-container": "#fe6a34",
+                        "surface-container-highest": "#e0e2ec",
+                        "surface-dim": "#d8d9e3",
+                        "surface-bright": "#f9f9ff",
+                        "error-container": "#ffdad6",
+                        "inverse-primary": "#adc7ff",
+                        "background": "#f9f9ff",
+                        "on-secondary-fixed": "#390c00",
+                        "surface-container-high": "#e6e8f2",
+                        "primary-container": "#1a73e8",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-fixed-variant": "#783100",
+                        "on-secondary-container": "#5d1900",
+                        "on-tertiary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "tertiary-container": "#c55500",
+                        "secondary-fixed-dim": "#ffb59d",
+                        "surface-variant": "#e0e2ec",
+                        "secondary": "#ab3500"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base": "4px",
+                        "xxl": "48px",
+                        "lg": "24px",
+                        "md": "16px",
+                        "gutter": "24px",
+                        "xl": "32px",
+                        "xs": "8px",
+                        "container-max": "1280px",
+                        "sm": "12px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "h3": ["Inter"],
+                        "h1": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "h2": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-md": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                        "label-sm": ["12px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                        "h3": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "h1": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "h2": ["32px", {"lineHeight": "1.25", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #f9f9ff; }
+        .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col antialiased">
+<!-- TopAppBar -->
+<header class="sticky top-0 z-50 flex items-center justify-between px-4 h-16 w-full max-w-md mx-auto bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800 shadow-sm">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 rounded-full overflow-hidden bg-surface-variant">
+<img alt="User profile photo" class="w-full h-full object-cover" data-alt="close-up portrait of a young professional man with short dark hair and a warm smile, wearing a blue shirt, well-lit studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBrk3VcqOz0NBDvm56UFLeVSlkSu8d_Fx7fkiYuAGwxEsjfy1-2idX539BNRdfQWt5WXz_Ck5jEKJyaOEyRFjOCh5E3ljP-Fr4F_iIoR1R9wkEy2sHkyrodziYOaieEz-w3bugYdT36wrMIBPSAFhvicl7AbP1ywxreYQnkfISKHEINEvSuIsq41Y1k8pOJ7I4MOsCkZRE3IScz72ed-yjWIITCucuV1KSnYpR31zQMbPVairriV0PxQAsPhNJAbtcptj4HLDGIXXRt"/>
+</div>
+</div>
+<div class="text-xl font-black tracking-tighter text-blue-600 dark:text-blue-400">Skill Rent</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-blue-600 dark:text-blue-400">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 w-full max-w-md mx-auto px-lg py-md pb-[100px] flex flex-col gap-lg">
+<!-- Search and Filter -->
+<div class="flex flex-col gap-sm">
+<div class="relative flex items-center w-full">
+<span class="material-symbols-outlined absolute left-md text-outline" data-icon="search">search</span>
+<input class="w-full h-12 pl-[48px] pr-md rounded-lg bg-surface-container border-none focus:ring-2 focus:ring-primary text-body-md text-on-surface placeholder:text-outline-variant transition-shadow shadow-[0_1px_2px_rgba(0,0,0,0.05)]" placeholder="Search requests..." type="text"/>
+<button class="absolute right-xs w-10 h-10 flex items-center justify-center rounded-DEFAULT hover:bg-surface-variant transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="tune">tune</span>
+</button>
+</div>
+<!-- Filter Chips -->
+<div class="flex items-center gap-xs overflow-x-auto pb-2 scrollbar-hide -mx-lg px-lg">
+<button class="shrink-0 h-8 px-sm rounded-full bg-primary-container text-on-primary-container font-label-md text-label-md transition-colors flex items-center justify-center">All</button>
+<button class="shrink-0 h-8 px-sm rounded-full bg-surface-container text-on-surface font-label-md text-label-md hover:bg-surface-variant transition-colors flex items-center justify-center border border-outline-variant">Nearby</button>
+<button class="shrink-0 h-8 px-sm rounded-full bg-surface-container text-on-surface font-label-md text-label-md hover:bg-surface-variant transition-colors flex items-center justify-center border border-outline-variant">High Budget</button>
+<button class="shrink-0 h-8 px-sm rounded-full bg-surface-container text-on-surface font-label-md text-label-md hover:bg-surface-variant transition-colors flex items-center justify-center border border-outline-variant">Urgent</button>
+</div>
+</div>
+<!-- Request List -->
+<div class="flex flex-col gap-md">
+<!-- Request Card 1 -->
+<div class="bg-surface-container-lowest rounded-xl p-lg shadow-[0_4px_20px_rgba(0,0,0,0.05)] flex flex-col gap-md border border-surface-variant md:border-none">
+<div class="flex justify-between items-start gap-sm">
+<div class="flex gap-sm items-start">
+<div class="w-12 h-12 rounded-lg bg-secondary-container/10 text-secondary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined" data-icon="plumbing">plumbing</span>
+</div>
+<div class="flex flex-col">
+<h3 class="font-h3 text-h3 text-on-surface line-clamp-2">Emergency Pipe Repair in Kitchen</h3>
+<div class="flex items-center gap-xs mt-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]" data-icon="location_on">location_on</span>
+<span class="font-body-md text-body-md text-sm">Brooklyn, 2.5km</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col items-end shrink-0">
+<span class="font-h3 text-h3 text-primary">$150-250</span>
+<span class="font-label-sm text-label-sm text-error bg-error-container/30 px-2 py-0.5 rounded mt-1">Urgent</span>
+</div>
+</div>
+<div class="flex items-center justify-between border-t border-surface-variant pt-md mt-sm">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 rounded-full overflow-hidden bg-surface-variant">
+<img alt="Client avatar" class="w-full h-full object-cover" data-alt="portrait of a young woman with curly hair looking directly at camera, soft natural lighting, blurred background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD7yngHcpC5AXH9fhZwjFkPEgC28H3w7MbhqlLtlVzaS8akew1uoPtr6ahRYeUEPIpSCEFV9L-dGm_AzlgvwIEr7UJy8s0GwRqTXoDACxE7g3nF3iOUfhtbMzv7zWSP1fXVDbNxwmoiVdAKXlz40jsaTfNyAM8c5xJkc4w5vct_4WhU9_bbVy39kBV6XCvQ29nS-26EgH22BoTmZ-tZE_rKZ9_3gyItKwMowvJVtYn1w9W26aDm7y0o9Mv4FaWX8XrumTRH_I1Ea4bE"/>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Sarah J.</span>
+<span class="font-label-sm text-label-sm text-outline flex items-center gap-[2px]">
+<span class="material-symbols-outlined text-[12px] text-tertiary" data-weight="fill">star</span>
+                                4.9 (12 reviews)
+                            </span>
+</div>
+</div>
+<button class="h-10 px-lg bg-secondary-container text-on-secondary hover:opacity-90 active:scale-95 transition-all rounded-lg font-label-md text-label-md flex items-center justify-center shadow-sm">
+                        Apply Now
+                    </button>
+</div>
+</div>
+<!-- Request Card 2 -->
+<div class="bg-surface-container-lowest rounded-xl p-lg shadow-[0_4px_20px_rgba(0,0,0,0.05)] flex flex-col gap-md border border-surface-variant md:border-none">
+<div class="flex justify-between items-start gap-sm">
+<div class="flex gap-sm items-start">
+<div class="w-12 h-12 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined" data-icon="brush">brush</span>
+</div>
+<div class="flex flex-col">
+<h3 class="font-h3 text-h3 text-on-surface line-clamp-2">Interior Painting - Living Room</h3>
+<div class="flex items-center gap-xs mt-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]" data-icon="location_on">location_on</span>
+<span class="font-body-md text-body-md text-sm">Queens, 5.1km</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col items-end shrink-0">
+<span class="font-h3 text-h3 text-primary">$400-600</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container px-2 py-0.5 rounded mt-1">Flexible</span>
+</div>
+</div>
+<div class="flex items-center justify-between border-t border-surface-variant pt-md mt-sm">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 rounded-full overflow-hidden bg-surface-variant">
+<img alt="Client avatar" class="w-full h-full object-cover" data-alt="portrait of a mature man with a beard looking off camera, warm lighting, urban background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAuZug3ozDkW9NHKK4wI3wUJZJab2giDshpCWcwYfX6NV2Z95cWZfbmx0S9sHaLfVjt4j4gGGO8aaLF0KJWR9rePsN_qLPKmBO1T1oAJDhfTFjl5ThvX_UjM5VBRsezFJLVgmdqNKyGXPoIoV0TQz_k6gl7PFMQCVTd8tUF0UOahEmESpWrDsM4miPJ_ejU-MPl75TH22TFeKWBANBVg2YI1mmAo4FqJgcBBBjz55Sj5aHjmcxmyKBxgzJXrfjK_o7AUfqQMoasNn7a"/>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Michael R.</span>
+<span class="font-label-sm text-label-sm text-outline flex items-center gap-[2px]">
+<span class="material-symbols-outlined text-[12px] text-tertiary" data-weight="fill">star</span>
+                                5.0 (3 reviews)
+                            </span>
+</div>
+</div>
+<button class="h-10 px-lg bg-secondary-container text-on-secondary hover:opacity-90 active:scale-95 transition-all rounded-lg font-label-md text-label-md flex items-center justify-center shadow-sm">
+                        Apply Now
+                    </button>
+</div>
+</div>
+<!-- Request Card 3 -->
+<div class="bg-surface-container-lowest rounded-xl p-lg shadow-[0_4px_20px_rgba(0,0,0,0.05)] flex flex-col gap-md border border-surface-variant md:border-none">
+<div class="flex justify-between items-start gap-sm">
+<div class="flex gap-sm items-start">
+<div class="w-12 h-12 rounded-lg bg-tertiary-container/10 text-tertiary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined" data-icon="chair">chair</span>
+</div>
+<div class="flex flex-col">
+<h3 class="font-h3 text-h3 text-on-surface line-clamp-2">Assemble IKEA Furniture Set</h3>
+<div class="flex items-center gap-xs mt-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]" data-icon="location_on">location_on</span>
+<span class="font-body-md text-body-md text-sm">Manhattan, 1.2km</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col items-end shrink-0">
+<span class="font-h3 text-h3 text-primary">$80-120</span>
+</div>
+</div>
+<div class="flex items-center justify-between border-t border-surface-variant pt-md mt-sm">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 rounded-full overflow-hidden bg-surface-variant">
+<div class="w-full h-full flex items-center justify-center bg-inverse-primary text-on-primary-container font-label-md text-label-md">
+                                AL
+                            </div>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-label-md text-on-surface">Amanda L.</span>
+<span class="font-label-sm text-label-sm text-outline flex items-center gap-[2px]">
+                                New Client
+                            </span>
+</div>
+</div>
+<button class="h-10 px-lg bg-secondary-container text-on-secondary hover:opacity-90 active:scale-95 transition-all rounded-lg font-label-md text-label-md flex items-center justify-center shadow-sm">
+                        Apply Now
+                    </button>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 right-0 z-50 flex justify-around items-center h-20 px-2 pb-safe w-full max-w-md mx-auto bg-white/95 dark:bg-slate-900/95 backdrop-blur-md rounded-t-2xl shadow-[0_-4px_20px_rgba(0,0,0,0.05)] md:hidden">
+<button class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 opacity-80 hover:text-blue-500 dark:hover:text-blue-300 active:scale-90 transition-all duration-200 gap-1 w-16">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-['Inter'] text-[10px] font-medium uppercase tracking-wider">Home</span>
+</button>
+<button class="flex flex-col items-center justify-center text-blue-600 dark:text-blue-400 scale-110 transition-transform hover:text-blue-500 dark:hover:text-blue-300 active:scale-90 duration-200 gap-1 w-16">
+<span class="material-symbols-outlined" data-icon="explore" data-weight="fill">explore</span>
+<span class="font-['Inter'] text-[10px] font-medium uppercase tracking-wider">Browse</span>
+</button>
+<button class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 opacity-80 hover:text-blue-500 dark:hover:text-blue-300 active:scale-90 transition-all duration-200 gap-1 w-16">
+<span class="material-symbols-outlined" data-icon="add_circle">add_circle</span>
+<span class="font-['Inter'] text-[10px] font-medium uppercase tracking-wider">Post</span>
+</button>
+<button class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 opacity-80 hover:text-blue-500 dark:hover:text-blue-300 active:scale-90 transition-all duration-200 gap-1 w-16 relative">
+<span class="material-symbols-outlined" data-icon="chat_bubble">chat_bubble</span>
+<span class="absolute top-0 right-3 w-2 h-2 bg-error rounded-full"></span>
+<span class="font-['Inter'] text-[10px] font-medium uppercase tracking-wider">Messages</span>
+</button>
+<button class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 opacity-80 hover:text-blue-500 dark:hover:text-blue-300 active:scale-90 transition-all duration-200 gap-1 w-16">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-['Inter'] text-[10px] font-medium uppercase tracking-wider">Profile</span>
+</button>
+</nav>
+</body></html>

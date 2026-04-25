@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Skill Rent - Splash Screen</title>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light font-display antialiased text-gray-900 selection:bg-primary selection:text-white">
+<div class="relative flex min-h-screen w-full flex-col overflow-hidden">
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col items-center justify-center p-6">
+<!-- Logo & Title Group -->
+<div class="flex flex-col items-center justify-center flex-1 w-full max-w-md animate-fade-in">
+<!-- Logo Icon -->
+<div class="w-24 h-24 md:w-28 md:h-28 bg-primary rounded-2xl flex items-center justify-center shadow-lg shadow-primary/20 mb-8 transform transition-transform hover:scale-105">
+<span class="material-symbols-outlined text-white text-5xl md:text-6xl" style="font-variation-settings: 'FILL' 1;">
+                        handshake
+                    </span>
+</div>
+<!-- App Title -->
+<h1 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-tight text-center mb-3">
+                    Skill Rent
+                </h1>
+<!-- Tagline -->
+<h2 class="text-lg md:text-xl text-gray-600 font-medium text-center max-w-[250px]">
+                    Rent a skill, anytime.
+                </h2>
+</div>
+<!-- Loading Indicator Area -->
+<div class="w-full max-w-xs pb-12 pt-6">
+<!-- Progress Bar Container -->
+<div class="h-2 w-full bg-gray-200 rounded-full overflow-hidden">
+<!-- Progress Fill -->
+<div class="h-full bg-primary rounded-full relative" style="width: 60%;">
+<!-- Optional inner shine for material feel -->
+<div class="absolute inset-0 bg-white/20"></div>
+</div>
+</div>
+<p class="text-center text-sm text-gray-500 mt-4 font-medium tracking-wide uppercase">Loading...</p>
+</div>
+</main>
+</div>
+</body></html>

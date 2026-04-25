@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Applicants Screen - Skill Rent</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-background": "#191c23",
+                        "tertiary": "#9e4300",
+                        "on-surface": "#191c23",
+                        "primary": "#005bbf",
+                        "on-primary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "on-primary-fixed-variant": "#004493",
+                        "primary-fixed-dim": "#adc7ff",
+                        "on-secondary": "#ffffff",
+                        "inverse-on-surface": "#eff0fa",
+                        "inverse-surface": "#2d3038",
+                        "tertiary-fixed": "#ffdbcb",
+                        "on-secondary-fixed-variant": "#832600",
+                        "on-primary-fixed": "#001a41",
+                        "on-tertiary-fixed": "#341100",
+                        "on-tertiary-container": "#0e0200",
+                        "outline": "#727785",
+                        "surface-tint": "#005bc0",
+                        "error": "#ba1a1a",
+                        "on-primary-container": "#ffffff",
+                        "surface-container-low": "#f2f3fd",
+                        "surface": "#f9f9ff",
+                        "outline-variant": "#c1c6d6",
+                        "surface-container": "#ecedf7",
+                        "on-surface-variant": "#414754",
+                        "secondary-fixed": "#ffdbd0",
+                        "tertiary-fixed-dim": "#ffb691",
+                        "primary-fixed": "#d8e2ff",
+                        "secondary-container": "#fe6a34",
+                        "surface-container-highest": "#e0e2ec",
+                        "surface-dim": "#d8d9e3",
+                        "surface-bright": "#f9f9ff",
+                        "error-container": "#ffdad6",
+                        "inverse-primary": "#adc7ff",
+                        "background": "#f9f9ff",
+                        "on-secondary-fixed": "#390c00",
+                        "surface-container-high": "#e6e8f2",
+                        "primary-container": "#1a73e8",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-fixed-variant": "#783100",
+                        "on-secondary-container": "#5d1900",
+                        "on-tertiary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "tertiary-container": "#c55500",
+                        "secondary-fixed-dim": "#ffb59d",
+                        "surface-variant": "#e0e2ec",
+                        "secondary": "#ab3500"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base": "4px",
+                        "xxl": "48px",
+                        "lg": "24px",
+                        "md": "16px",
+                        "gutter": "24px",
+                        "xl": "32px",
+                        "xs": "8px",
+                        "container-max": "1280px",
+                        "sm": "12px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "h3": ["Inter"],
+                        "h1": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "h2": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "500" }],
+                        "label-sm": ["12px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "h3": ["24px", { "lineHeight": "1.3", "fontWeight": "600" }],
+                        "h1": ["40px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "h2": ["32px", { "lineHeight": "1.25", "letterSpacing": "-0.01em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen pb-24">
+<!-- Top Navigation (Task-focused, suppressing global navs per rules) -->
+<header class="sticky top-0 z-50 flex items-center justify-between px-4 h-16 w-full max-w-container-max mx-auto bg-surface-container-lowest border-b border-surface-variant shadow-sm">
+<button class="flex items-center justify-center p-2 rounded-full hover:bg-surface-container-low transition-colors text-on-surface">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<h1 class="font-h3 text-h3 text-on-surface">Applicants</h1>
+<div class="w-10"></div> <!-- Spacer for centering -->
+</header>
+<main class="max-w-container-max mx-auto px-4 md:px-lg mt-md">
+<!-- Collapsible Request Summary Card -->
+<section class="bg-surface-container-lowest rounded-[16px] shadow-[0_4px_20px_rgba(0,0,0,0.05)] p-lg mb-lg border border-surface-variant">
+<div class="flex justify-between items-start cursor-pointer">
+<div>
+<span class="inline-block px-3 py-1 bg-surface-container-low text-primary rounded-full font-label-sm text-label-sm mb-2">Plumbing</span>
+<h2 class="font-h2 text-h2 text-on-surface mb-1">Fix Leaking Kitchen Sink Pipe</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Budget: $80 - $120 • Needed by tomorrow</p>
+</div>
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-colors">
+<span class="material-symbols-outlined">expand_more</span>
+</button>
+</div>
+</section>
+<!-- Subtitle -->
+<div class="flex items-center justify-between mb-md">
+<h3 class="font-h3 text-h3 text-on-surface">3 people applied</h3>
+<span class="font-label-md text-label-md text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]">sort</span> Sort by Best Match
+            </span>
+</div>
+<!-- Applicant Cards List -->
+<div class="space-y-md">
+<!-- Applicant Card 1 (Accepted State) -->
+<article class="bg-surface-container-lowest rounded-[16px] shadow-[0_4px_20px_rgba(0,0,0,0.05)] p-lg border-2 border-primary relative overflow-hidden">
+<div class="absolute top-0 right-0 bg-primary text-on-primary font-label-sm text-label-sm px-3 py-1 rounded-bl-[12px] flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">check_circle</span> Accepted
+                </div>
+<div class="flex flex-col md:flex-row gap-lg">
+<!-- Avatar & Info -->
+<div class="flex items-start gap-md flex-1">
+<img alt="Profile picture of Michael Chen" class="w-16 h-16 rounded-full object-cover border-2 border-surface-container" data-alt="Professional headshot of an Asian man smiling, wearing a casual grey polo shirt, warm studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuACT5XlXD_biKIdhbgvk8hmCuafCIg2C4EZtMIskQZh9E8IcIeKqVNYEvhsxhprq4Tti1J3JFDnJVlHi8KpphXk6_bCqP21DaGuyFaKDcBzXUdUmEvcIQop08DdcVKepumFV1ujApnIMtKTg49nG0z7dP42Q22N8OnuJPr2iY-yZPjJ-WqyKs0mcyi5VMsINYGBnUXyhVfWKRrtzpuqXQsmM58xCrtBD1PZcY0cEuM4di4X0FD5eHlRK0gedNpmnUvxsqG4AJ5pjzW8"/>
+<div>
+<div class="flex items-center gap-2 mb-1">
+<h4 class="font-h3 text-h3 text-on-surface text-[20px]">Michael Chen</h4>
+<span class="material-symbols-outlined text-secondary text-[18px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+<div class="flex items-center gap-4 font-label-md text-label-md text-on-surface-variant mb-2">
+<span class="flex items-center gap-1 text-on-surface font-semibold">
+<span class="material-symbols-outlined text-tertiary-container text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span> 4.9 <span class="font-normal text-on-surface-variant">(124)</span>
+</span>
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]">location_on</span> 1.2km away
+                                </span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant italic border-l-2 border-primary-fixed pl-3 my-3">
+                                "I can help you with this right away. I have 10 years of plumbing experience and carry all necessary tools for under-sink repairs."
+                            </p>
+</div>
+</div>
+<!-- Price & Actions -->
+<div class="flex flex-col justify-between items-start md:items-end min-w-[140px] gap-4 md:gap-0 border-t md:border-t-0 border-surface-variant pt-4 md:pt-0">
+<div class="text-left md:text-right">
+<span class="block font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-1">Proposed Price</span>
+<span class="font-h2 text-h2 text-primary">$95</span>
+</div>
+<div class="flex w-full md:w-auto gap-2">
+<button class="flex-1 md:flex-none px-4 py-2 rounded-[12px] border border-outline font-label-md text-label-md text-on-surface hover:bg-surface-container-low transition-colors">
+                                Message
+                            </button>
+</div>
+</div>
+</div>
+</article>
+<!-- Applicant Card 2 -->
+<article class="bg-surface-container-lowest rounded-[16px] shadow-[0_4px_20px_rgba(0,0,0,0.05)] p-lg border border-surface-variant">
+<div class="flex flex-col md:flex-row gap-lg">
+<!-- Avatar & Info -->
+<div class="flex items-start gap-md flex-1">
+<img alt="Profile picture of Sarah Jenkins" class="w-16 h-16 rounded-full object-cover border-2 border-surface-container" data-alt="Professional headshot of a smiling woman with curly hair wearing a blue work shirt, bright outdoor lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCA63d5PYpQ_BWT0QTdckllwi45L9GZamLZFwA0fR1CEV-vZHmGKnSBMISQdNelea0ZJ1bmtVAw5fAYxvLZLyVnKKLU2sx9rBjM3Q7uQkpsVeLkYfIWwuOGAM755QpagV0FolAzKqcziBTHaPlZW3BM37P0PoRb_Kuz-mX40EIu-HVoBi6B-fBQKbZMuilFvAYBwzm0CE8XkSj8tqhSuLNnAxOb-PmwtnXwmtSGwt3v3N-NSkN1DGVmG-4zf38YtkelbNw5qmG6vG-u"/>
+<div>
+<div class="flex items-center gap-2 mb-1">
+<h4 class="font-h3 text-h3 text-on-surface text-[20px]">Sarah Jenkins</h4>
+</div>
+<div class="flex items-center gap-4 font-label-md text-label-md text-on-surface-variant mb-2">
+<span class="flex items-center gap-1 text-on-surface font-semibold">
+<span class="material-symbols-outlined text-tertiary-container text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span> 4.7 <span class="font-normal text-on-surface-variant">(86)</span>
+</span>
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]">location_on</span> 3.5km away
+                                </span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant italic border-l-2 border-surface-variant pl-3 my-3">
+                                "Available tomorrow morning. Sounds like a standard P-trap issue, I keep replacement parts stocked in my van."
+                            </p>
+</div>
+</div>
+<!-- Price & Actions -->
+<div class="flex flex-col justify-between items-start md:items-end min-w-[140px] gap-4 md:gap-0 border-t md:border-t-0 border-surface-variant pt-4 md:pt-0">
+<div class="text-left md:text-right">
+<span class="block font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-1">Proposed Price</span>
+<span class="font-h2 text-h2 text-on-surface">$110</span>
+</div>
+<div class="flex w-full md:w-auto gap-2">
+<button class="flex-1 md:flex-none px-4 py-2 rounded-[12px] border border-outline font-label-md text-label-md text-on-surface hover:bg-surface-container-low transition-colors text-center">
+                                View Profile
+                            </button>
+<button class="flex-1 md:flex-none px-4 py-2 rounded-[12px] bg-primary text-on-primary font-label-md text-label-md hover:bg-on-primary-fixed-variant transition-colors shadow-sm text-center">
+                                Accept
+                            </button>
+</div>
+</div>
+</div>
+</article>
+<!-- Applicant Card 3 -->
+<article class="bg-surface-container-lowest rounded-[16px] shadow-[0_4px_20px_rgba(0,0,0,0.05)] p-lg border border-surface-variant">
+<div class="flex flex-col md:flex-row gap-lg">
+<!-- Avatar & Info -->
+<div class="flex items-start gap-md flex-1">
+<div class="w-16 h-16 rounded-full bg-surface-container-highest flex items-center justify-center border-2 border-surface-container text-on-surface-variant font-h3 text-h3">
+                            DB
+                        </div>
+<div>
+<div class="flex items-center gap-2 mb-1">
+<h4 class="font-h3 text-h3 text-on-surface text-[20px]">David Barnes</h4>
+</div>
+<div class="flex items-center gap-4 font-label-md text-label-md text-on-surface-variant mb-2">
+<span class="flex items-center gap-1 text-on-surface font-semibold">
+<span class="material-symbols-outlined text-tertiary-container text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span> 4.2 <span class="font-normal text-on-surface-variant">(12)</span>
+</span>
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]">location_on</span> 5.8km away
+                                </span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant italic border-l-2 border-surface-variant pl-3 my-3">
+                                "I can fix it by the weekend. I usually do bigger jobs but have an opening on Saturday afternoon if you can wait."
+                            </p>
+</div>
+</div>
+<!-- Price & Actions -->
+<div class="flex flex-col justify-between items-start md:items-end min-w-[140px] gap-4 md:gap-0 border-t md:border-t-0 border-surface-variant pt-4 md:pt-0">
+<div class="text-left md:text-right">
+<span class="block font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-1">Proposed Price</span>
+<span class="font-h2 text-h2 text-on-surface">$80</span>
+</div>
+<div class="flex w-full md:w-auto gap-2">
+<button class="flex-1 md:flex-none px-4 py-2 rounded-[12px] border border-outline font-label-md text-label-md text-on-surface hover:bg-surface-container-low transition-colors text-center">
+                                View Profile
+                            </button>
+<button class="flex-1 md:flex-none px-4 py-2 rounded-[12px] bg-primary text-on-primary font-label-md text-label-md hover:bg-on-primary-fixed-variant transition-colors shadow-sm text-center">
+                                Accept
+                            </button>
+</div>
+</div>
+</div>
+</article>
+</div>
+</main>
+</body></html>

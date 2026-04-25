@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Post a Request - Skill Rent</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-background": "#191c23",
+                        "tertiary": "#9e4300",
+                        "on-surface": "#191c23",
+                        "primary": "#005bbf",
+                        "on-primary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "on-primary-fixed-variant": "#004493",
+                        "primary-fixed-dim": "#adc7ff",
+                        "on-secondary": "#ffffff",
+                        "inverse-on-surface": "#eff0fa",
+                        "inverse-surface": "#2d3038",
+                        "tertiary-fixed": "#ffdbcb",
+                        "on-secondary-fixed-variant": "#832600",
+                        "on-primary-fixed": "#001a41",
+                        "on-tertiary-fixed": "#341100",
+                        "on-tertiary-container": "#0e0200",
+                        "outline": "#727785",
+                        "surface-tint": "#005bc0",
+                        "error": "#ba1a1a",
+                        "on-primary-container": "#ffffff",
+                        "surface-container-low": "#f2f3fd",
+                        "surface": "#f9f9ff",
+                        "outline-variant": "#c1c6d6",
+                        "surface-container": "#ecedf7",
+                        "on-surface-variant": "#414754",
+                        "secondary-fixed": "#ffdbd0",
+                        "tertiary-fixed-dim": "#ffb691",
+                        "primary-fixed": "#d8e2ff",
+                        "secondary-container": "#fe6a34",
+                        "surface-container-highest": "#e0e2ec",
+                        "surface-dim": "#d8d9e3",
+                        "surface-bright": "#f9f9ff",
+                        "error-container": "#ffdad6",
+                        "inverse-primary": "#adc7ff",
+                        "background": "#f9f9ff",
+                        "on-secondary-fixed": "#390c00",
+                        "surface-container-high": "#e6e8f2",
+                        "primary-container": "#1a73e8",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-fixed-variant": "#783100",
+                        "on-secondary-container": "#5d1900",
+                        "on-tertiary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "tertiary-container": "#c55500",
+                        "secondary-fixed-dim": "#ffb59d",
+                        "surface-variant": "#e0e2ec",
+                        "secondary": "#ab3500"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base": "4px",
+                        "xxl": "48px",
+                        "lg": "24px",
+                        "md": "16px",
+                        "gutter": "24px",
+                        "xl": "32px",
+                        "xs": "8px",
+                        "container-max": "1280px",
+                        "sm": "12px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "h3": ["Inter"],
+                        "h1": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "h2": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "500" }],
+                        "label-sm": ["12px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "h3": ["24px", { "lineHeight": "1.3", "fontWeight": "600" }],
+                        "h1": ["40px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "h2": ["32px", { "lineHeight": "1.25", "letterSpacing": "-0.01em", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined[style*="'FILL' 1"] {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col items-center">
+<!-- TopAppBar -->
+<header class="sticky top-0 z-50 flex items-center justify-between px-4 h-16 w-full max-w-md mx-auto bg-white border-b border-slate-100 shadow-sm">
+<button class="flex items-center justify-center p-2 rounded-full hover:bg-slate-50 transition-colors text-slate-500 active:scale-95 transition-transform duration-150">
+<span class="material-symbols-outlined text-[24px]">arrow_back</span>
+</button>
+<div class="flex-1 flex justify-center">
+<h1 class="text-xl font-black tracking-tighter text-primary">Skill Rent</h1>
+</div>
+<div class="w-10"></div> <!-- Placeholder for balance -->
+</header>
+<!-- Main Content -->
+<main class="w-full max-w-md mx-auto flex-1 px-lg py-xl flex flex-col gap-xl pb-[120px]">
+<section>
+<h1 class="font-h2 text-h2 text-on-background mb-sm">What do you need?</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Post your request and get offers from skilled professionals nearby.</p>
+</section>
+<!-- Description Form -->
+<section class="bg-surface-container-lowest rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.05)] p-lg border border-surface-variant/50">
+<div class="flex flex-col gap-lg">
+<!-- Description -->
+<div>
+<label class="block font-label-md text-label-md text-on-surface mb-xs" for="description">Description</label>
+<textarea class="w-full rounded-lg border-outline-variant bg-surface-container-low text-on-surface font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary placeholder:text-outline p-sm resize-none" id="description" placeholder="Describe your need..." rows="4"></textarea>
+</div>
+<!-- Category Chips -->
+<div>
+<label class="block font-label-md text-label-md text-on-surface mb-xs">Category</label>
+<div class="flex flex-wrap gap-xs">
+<button class="px-md py-xs rounded-full bg-primary-container text-on-primary-container font-label-md text-label-md border border-transparent">Plumbing</button>
+<button class="px-md py-xs rounded-full bg-surface-container-high text-on-surface-variant font-label-md text-label-md border border-outline-variant hover:bg-surface-container-highest transition-colors">Electrician</button>
+<button class="px-md py-xs rounded-full bg-surface-container-high text-on-surface-variant font-label-md text-label-md border border-outline-variant hover:bg-surface-container-highest transition-colors">Cleaning</button>
+<button class="px-md py-xs rounded-full bg-surface-container-high text-on-surface-variant font-label-md text-label-md border border-outline-variant hover:bg-surface-container-highest transition-colors">Moving</button>
+<button class="px-md py-xs rounded-full bg-surface-container-high text-on-surface-variant font-label-md text-label-md border border-outline-variant hover:bg-surface-container-highest transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">add</span> More
+                        </button>
+</div>
+</div>
+<!-- Budget -->
+<div>
+<label class="block font-label-md text-label-md text-on-surface mb-xs">Estimated Budget</label>
+<div class="relative flex items-center">
+<span class="absolute left-sm text-outline font-body-lg text-body-lg">$</span>
+<input class="w-full pl-xl pr-sm py-sm rounded-lg border-outline-variant bg-surface-container-low text-on-surface font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary placeholder:text-outline" placeholder="0.00" type="number"/>
+</div>
+</div>
+<!-- Location -->
+<div>
+<label class="block font-label-md text-label-md text-on-surface mb-xs">Location</label>
+<div class="relative flex items-center">
+<span class="absolute left-sm text-outline material-symbols-outlined">location_on</span>
+<input class="w-full pl-xl pr-xl py-sm rounded-lg border-outline-variant bg-surface-container-low text-on-surface font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary placeholder:text-outline" placeholder="Enter address or zip code" type="text"/>
+<button class="absolute right-sm text-primary hover:text-primary-container transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">my_location</span>
+</button>
+</div>
+</div>
+<!-- Urgency -->
+<div>
+<label class="block font-label-md text-label-md text-on-surface mb-xs">Urgency</label>
+<div class="flex rounded-lg overflow-hidden border border-outline-variant bg-surface-container-low p-1 gap-1">
+<button class="flex-1 py-xs text-center rounded-md bg-transparent text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-highest transition-colors">Flexible</button>
+<button class="flex-1 py-xs text-center rounded-md bg-primary-container text-on-primary-container font-label-md text-label-md shadow-sm">Today</button>
+<button class="flex-1 py-xs text-center rounded-md bg-transparent text-on-surface-variant font-label-md text-label-md hover:bg-surface-container-highest transition-colors">ASAP</button>
+</div>
+</div>
+<!-- Photo Upload -->
+<div>
+<label class="block font-label-md text-label-md text-on-surface mb-xs">Add Photos (Optional)</label>
+<button class="w-full h-24 rounded-lg border-2 border-dashed border-outline-variant bg-surface-container-low flex flex-col items-center justify-center gap-xs text-on-surface-variant hover:border-primary hover:text-primary transition-colors hover:bg-primary-fixed/30 cursor-pointer">
+<span class="material-symbols-outlined text-[24px]">add_a_photo</span>
+<span class="font-label-sm text-label-sm">Upload photo</span>
+</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Action Area -->
+<div class="fixed bottom-0 left-0 right-0 z-40 bg-surface-container-lowest border-t border-surface-variant/50 p-lg w-full max-w-md mx-auto pb-safe">
+<button class="w-full py-sm px-lg bg-primary text-on-primary rounded-lg font-label-md text-label-md shadow-[0_4px_12px_rgba(0,91,191,0.2)] hover:bg-on-primary-fixed-variant transition-colors active:scale-[0.98] flex justify-center items-center gap-xs">
+            Post Request
+        </button>
+</div>
+</body></html>

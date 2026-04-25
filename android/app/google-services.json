@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "6468517630",
+    "project_id": "skill-rent-e5290",
+    "storage_bucket": "skill-rent-e5290.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:6468517630:android:457f2d2bef45ce59f62faf",
+        "android_client_info": {
+          "package_name": "com.kaya.skill_rent"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1iMDYFOTXseEQKhP5lA7iNNxLWGwCp2s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

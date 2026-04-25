@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>User Profile - SkillRent</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-low": "#f2f3fd",
+                        "on-tertiary": "#ffffff",
+                        "primary-fixed-dim": "#adc7ff",
+                        "primary-fixed": "#d8e2ff",
+                        "on-tertiary-container": "#0e0200",
+                        "tertiary-container": "#c55500",
+                        "surface-bright": "#f9f9ff",
+                        "surface-container-high": "#e6e8f2",
+                        "on-primary": "#ffffff",
+                        "on-surface-variant": "#414754",
+                        "surface-container-highest": "#e0e2ec",
+                        "surface": "#f9f9ff",
+                        "on-secondary-fixed": "#390c00",
+                        "on-error": "#ffffff",
+                        "surface-container": "#ecedf7",
+                        "surface-dim": "#d8d9e3",
+                        "surface-container-lowest": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "tertiary": "#9e4300",
+                        "primary-container": "#1a73e8",
+                        "outline": "#727785",
+                        "on-background": "#191c23",
+                        "on-secondary-fixed-variant": "#832600",
+                        "on-primary-fixed-variant": "#004493",
+                        "background": "#f9f9ff",
+                        "on-secondary": "#ffffff",
+                        "outline-variant": "#c1c6d6",
+                        "tertiary-fixed": "#ffdbcb",
+                        "secondary-fixed": "#ffdbd0",
+                        "on-tertiary-fixed-variant": "#783100",
+                        "on-primary-container": "#ffffff",
+                        "on-surface": "#191c23",
+                        "on-primary-fixed": "#001a41",
+                        "inverse-primary": "#adc7ff",
+                        "surface-tint": "#005bc0",
+                        "tertiary-fixed-dim": "#ffb691",
+                        "on-error-container": "#93000a",
+                        "secondary-container": "#fe6a34",
+                        "on-tertiary-fixed": "#341100",
+                        "error": "#ba1a1a",
+                        "inverse-on-surface": "#eff0fa",
+                        "secondary": "#ab3500",
+                        "secondary-fixed-dim": "#ffb59d",
+                        "primary": "#005bbf",
+                        "inverse-surface": "#2d3038",
+                        "surface-variant": "#e0e2ec",
+                        "on-secondary-container": "#5d1900"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "sm": "12px",
+                        "gutter": "24px",
+                        "base": "4px",
+                        "lg": "24px",
+                        "xl": "32px",
+                        "xxl": "48px",
+                        "xs": "8px",
+                        "md": "16px",
+                        "container-max": "1280px"
+                    },
+                    "fontFamily": {
+                        "h2": ["Inter"],
+                        "h3": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-md": ["Inter"],
+                        "h1": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "h2": ["32px", { "lineHeight": "1.25", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "h3": ["24px", { "lineHeight": "1.3", "fontWeight": "600" }],
+                        "label-sm": ["12px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "500" }],
+                        "h1": ["40px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .shadow-ambient-level-2 {
+            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background pb-24 md:pb-0 font-body-md">
+<!-- TopAppBar (Web) -->
+<header class="hidden md:flex justify-between items-center w-full px-4 h-16 bg-white shadow-sm full-width top-0 z-50 sticky border-b border-surface-container-highest">
+<div class="flex items-center gap-gutter">
+<span class="font-h3 text-h3 text-primary-container tracking-tight">SkillRent</span>
+<nav class="flex gap-lg">
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Explore</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Missions</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Messages</a>
+<a class="font-label-md text-label-md text-primary font-bold" href="#">Profile</a>
+</nav>
+</div>
+<div class="flex items-center gap-md">
+<button class="p-xs text-on-surface-variant hover:bg-surface-container-low rounded-full transition-colors">
+<span class="material-symbols-outlined">search</span>
+</button>
+<img alt="User Profile Avatar" class="w-10 h-10 rounded-full object-cover border-2 border-surface-container-highest" data-alt="Professional headshot of a young man with a warm smile, wearing a casual button-down shirt, soft natural lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD3mWdqfpAXFlW8N2ndM2C3W1LnaPyF6UNZ1ZTpCUt_Sw2rlH8gmb318Tv24TxoA_byh99FR5609bZ2sq3asJFeO2XaMlid3_dtU9Q_3AGEYIn_D65nphOgUsjSG2MbqDkjTEhQ46yS9NqVGSIrMtRdFXCn_l2Bwy1I8oCVJs0sbpUdU2m1NjHV02P5PcIYqqWRMBoKiv2R9RcuahWk1j3arvBiy6UbFa0O4uUT-NrqXgxOtHVCcsgOQd3q6P3TuH053pfexrOW0YAi"/>
+</div>
+</header>
+<main class="max-w-container-max mx-auto md:px-gutter md:py-lg">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Left Column: Profile Card -->
+<div class="md:col-span-4 lg:col-span-3">
+<div class="bg-surface-container-lowest rounded-[16px] shadow-ambient-level-2 overflow-hidden sticky top-[88px]">
+<!-- Cover Photo -->
+<div class="h-32 bg-primary-container relative group cursor-pointer">
+<img alt="Cover Photo" class="w-full h-full object-cover" data-alt="Abstract minimal geometric background in blue and orange hues, clean lines, subtle gradient" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBrnAgLDAGrbEBSv_RTkqgdNpqox-v2Wh5I5PjPve_AhUaJKlEc_scxGPZwLMUsEp8dx93C94qB99YbBh_7f9BGIt9nHNDLsvo4UhDGLeGIc6diMxfsB2ehR9hEExl27Hdg3bSNAaUbUjbldF6OvfIKOuF9mchItt8ugYT5NDGZRYnem9ZQYhL4d3RPs4PdaBSDPha3dJzd_z0ikdWkigx-vAwzXyMxOCOl85aRZXp-3xQxBIe_oEPlhYzaGHPXGvknqUsMfMIdoVGD"/>
+<div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+<span class="material-symbols-outlined text-white">edit</span>
+</div>
+</div>
+<div class="px-lg pb-lg relative">
+<!-- Avatar -->
+<div class="absolute -top-12 left-lg group cursor-pointer">
+<div class="w-24 h-24 rounded-full border-4 border-surface-container-lowest overflow-hidden bg-surface-container">
+<img alt="Alex Johnson" class="w-full h-full object-cover" data-alt="Professional headshot of a young man with a warm smile, wearing a casual button-down shirt, soft natural lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCc1F7G3rxvr2auU1AzSpdpLXsS367-erVwHeNmZZhmYtxlG8thxTR42Zj_LJSrq_hiX78HWyHGR2DOX6kAxVnN8NYXcPoexRXFSws7uOebP8SLBtJflMJFV1v3KC-g8-1QqaCBSkgXKOAIRcLy9cW_ksC7IO6XTHeCHHnQkkn5MLOuG133vZ-o6Ztg6JzwrPtQl3aw2gJrLLHau6eUehj9z3GYBObSmTL7cUWvzGoOZfslwJMMz8TiVSc7lKgAuvSi7wCRkRtV8D39"/>
+<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-sm">photo_camera</span>
+</div>
+</div>
+<div class="absolute bottom-1 right-1 w-5 h-5 bg-secondary-container rounded-full border-2 border-surface-container-lowest flex items-center justify-center" title="Verified Expert">
+<span class="material-symbols-outlined text-[10px] text-white" style="font-variation-settings: 'FILL' 1;">check</span>
+</div>
+</div>
+<!-- Edit Button (Mobile Top Right) -->
+<div class="flex justify-end pt-sm">
+<button class="font-label-md text-label-md text-primary bg-primary-fixed hover:bg-primary-fixed-dim px-md py-xs rounded-lg transition-colors flex items-center gap-xs">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+                                Edit Profile
+                            </button>
+</div>
+<!-- Info -->
+<div class="mt-xs">
+<h1 class="font-h3 text-h3 text-on-surface">Alex Johnson</h1>
+<div class="flex items-center gap-xs mt-base text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]">location_on</span>
+<span class="font-label-md text-label-md">San Francisco, CA</span>
+</div>
+<div class="flex items-center gap-xs mt-base text-on-surface-variant opacity-80">
+<span class="material-symbols-outlined text-[16px]">calendar_today</span>
+<span class="font-label-sm text-label-sm">Member since 2023</span>
+</div>
+</div>
+<div class="h-px bg-surface-variant my-md w-full"></div>
+<!-- Bio -->
+<div>
+<h2 class="font-label-md text-label-md text-on-surface mb-xs">About</h2>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">
+                                Passionate mobile developer and UI designer. I love turning complex problems into simple, beautiful, and intuitive designs. Always learning new tech.
+                            </p>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Content -->
+<div class="md:col-span-8 lg:col-span-9 flex flex-col gap-gutter">
+<!-- Stats Row -->
+<div class="grid grid-cols-3 gap-sm md:gap-gutter">
+<div class="bg-surface-container-lowest rounded-[16px] p-md shadow-ambient-level-2 text-center flex flex-col justify-center">
+<span class="font-h2 text-h2 text-primary-container">12</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mt-base">Missions</span>
+</div>
+<div class="bg-surface-container-lowest rounded-[16px] p-md shadow-ambient-level-2 text-center flex flex-col justify-center">
+<div class="flex items-center justify-center gap-base text-secondary-container">
+<span class="font-h2 text-h2 text-on-surface">4.9</span>
+<span class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mt-base">Rating</span>
+</div>
+<div class="bg-surface-container-lowest rounded-[16px] p-md shadow-ambient-level-2 text-center flex flex-col justify-center">
+<span class="font-h2 text-h2 text-primary-container">98%</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mt-base">Success</span>
+</div>
+</div>
+<!-- Skills -->
+<div class="bg-surface-container-lowest rounded-[16px] p-lg shadow-ambient-level-2">
+<h2 class="font-h3 text-h3 text-on-surface mb-md">Skills &amp; Expertise</h2>
+<div class="flex flex-wrap gap-sm">
+<span class="px-md py-xs rounded-full bg-primary-fixed text-on-primary-fixed-variant font-label-md text-label-md">Flutter</span>
+<span class="px-md py-xs rounded-full bg-primary-fixed text-on-primary-fixed-variant font-label-md text-label-md">UI/UX Design</span>
+<span class="px-md py-xs rounded-full bg-primary-fixed text-on-primary-fixed-variant font-label-md text-label-md">Mathematics</span>
+<span class="px-md py-xs rounded-full bg-surface-container text-on-surface-variant font-label-md text-label-md border border-dashed border-outline-variant hover:bg-surface-container-high cursor-pointer flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px]">add</span> Add Skill
+                        </span>
+</div>
+</div>
+<!-- Reviews Section -->
+<div class="bg-surface-container-lowest rounded-[16px] p-lg shadow-ambient-level-2 mb-gutter">
+<div class="flex justify-between items-center mb-md">
+<h2 class="font-h3 text-h3 text-on-surface">Recent Reviews</h2>
+<a class="font-label-md text-label-md text-primary hover:underline" href="#">View All</a>
+</div>
+<div class="flex flex-col gap-md">
+<!-- Review 1 -->
+<div class="p-md rounded-xl bg-surface-bright border border-surface-container-highest">
+<div class="flex justify-between items-start mb-sm">
+<div class="flex gap-sm">
+<img alt="Reviewer" class="w-10 h-10 rounded-full object-cover" data-alt="Headshot of a smiling young woman with dark hair in a brightly lit office setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYk_9wNWJlZ506xqaL0a-Mf7EasXnHX_x0_RShOedXHRZiaiNIMxEUQHzRlpraARAm7pCRf_p40JCwtKzesJzc8QUZ15V0fxNpFQRiGK3monpdAJOFqH_UOquB1962j0DIvQdVsuL4Kr7cfu_g2TM_g3ee7pTmoFYLJ8I0HojP5OWw6pIiD5us9BMXgCI77h6TiN8T145GiVEDoAb0fgdaR40sDniGU5Gl30IgWwUeb0hpz50dbiR3nhPHgr-vGCZpqtOgzSyuKeFG"/>
+<div>
+<h4 class="font-label-md text-label-md text-on-surface">Sarah M.</h4>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Mobile App Design • 2 weeks ago</span>
+</div>
+</div>
+<div class="flex text-secondary-container">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">
+                                Alex did an amazing job on our Flutter app UI. Delivery was fast, communication was clear, and the final result exceeded our expectations. Highly recommend!
+                            </p>
+</div>
+<!-- Review 2 -->
+<div class="p-md rounded-xl bg-surface-bright border border-surface-container-highest">
+<div class="flex justify-between items-start mb-sm">
+<div class="flex gap-sm">
+<img alt="Reviewer" class="w-10 h-10 rounded-full object-cover" data-alt="Professional portrait of a middle-aged man wearing glasses against a neutral gray background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBr9nkNkbXk9vUEWylzOXUUsGEYCaP4EZUmgwHShvnc2X7HQcoWwO_1AIb1xi3SDhvo_Q0rD_trG598dFlBPaRF4H6TdupJMjIGem7N3p5LovuyoMmvPvGjZ6eyiMZYsnBl8TYVat96kLQVz_tZcD3pR_GjOF6xA4mri-b-Dq2q9zFFxk0KTJ4P6jtLOF7hJDR_lw9jJypi99Vpu5PfKYmII7KINW3iMMLE2w3Co5firkFqKt7dDMNoe7vXNdHlXQbpXPiDUKmYneZU"/>
+<div>
+<h4 class="font-label-md text-label-md text-on-surface">David K.</h4>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Math Tutoring • 1 month ago</span>
+</div>
+</div>
+<div class="flex text-secondary-container">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[16px] text-outline-variant" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">
+                                Great explanations for complex calculus problems. Very patient and knowledgeable.
+                            </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-2 py-3 pb-safe bg-white/95 backdrop-blur-md z-50 border-t border-surface-container-highest shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined mb-1">explore</span>
+<span class="font-label-sm text-[11px] font-medium">Explore</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined mb-1">assignment_turned_in</span>
+<span class="font-label-sm text-[11px] font-medium">Missions</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined mb-1">chat_bubble</span>
+<span class="font-label-sm text-[11px] font-medium">Messages</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary-container scale-110 transition-transform" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="font-label-sm text-[11px] font-medium font-bold">Profile</span>
+</a>
+</nav>
+</body></html>
