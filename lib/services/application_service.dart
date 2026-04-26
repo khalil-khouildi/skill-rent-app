@@ -60,70 +60,91 @@ class ApplicationService {
     }
   }
   
-  // Get applications for a specific request - WITHOUT orderBy to avoid index
+  // Get applications for a specific request
   Stream<QuerySnapshot> getApplicationsForRequest(String requestId) {
     print('🔍 Fetching applications for request: $requestId');
     return _firestore
         .collection('applications')
         .where('requestId', isEqualTo: requestId)
-        .snapshots();  // Removed orderBy temporarily
+        .snapshots();
   }
   
-  // Get freelancer's applications - WITHOUT orderBy
+  // Get freelancer's applications
   Stream<QuerySnapshot> getMyApplications() {
     final userId = _auth.currentUser!.uid;
     print('🔍 Fetching my applications for user: $userId');
     return _firestore
         .collection('applications')
         .where('freelancerId', isEqualTo: userId)
-        .snapshots();  // Removed orderBy
+        .snapshots();
   }
   
   // Accept an application
-  Future<bool> acceptApplication(String applicationId, String requestId) async {
-    try {
-      print('📝 Accepting application: $applicationId');
-      
-      await _firestore.collection('applications').doc(applicationId).update({
-        'status': 'accepted',
-      });
-      
-      // Reject all other pending applications for this request
-      final otherApps = await _firestore
-          .collection('applications')
-          .where('requestId', isEqualTo: requestId)
-          .where('status', isEqualTo: 'pending')
-          .get();
-      
-      for (var app in otherApps.docs) {
-        if (app.id != applicationId) {
-          await app.reference.update({'status': 'rejected'});
-          print('📝 Rejected application: ${app.id}');
-        }
+Future<bool> acceptApplication(
+  String applicationId, 
+  String requestId, 
+  String freelancerId, 
+  String freelancerName
+) async {
+  try {
+    print('📝 Accepting application: $applicationId');
+    print('📝 Freelancer ID: $freelancerId');
+    print('📝 Freelancer Name: $freelancerName');
+    
+    // Update the application status to accepted
+    await _firestore.collection('applications').doc(applicationId).update({
+      'status': 'accepted',
+    });
+    
+    // Reject all other pending applications for this request
+    final otherApps = await _firestore
+        .collection('applications')
+        .where('requestId', isEqualTo: requestId)
+        .where('status', isEqualTo: 'pending')
+        .get();
+    
+    for (var app in otherApps.docs) {
+      if (app.id != applicationId) {
+        await app.reference.update({'status': 'rejected'});
+        print('📝 Rejected application: ${app.id}');
       }
-      
-      // Update the request status to in_progress
-      await _firestore.collection('requests').doc(requestId).update({
-        'status': 'in_progress',
-      });
-      
-      print('✅ Application accepted successfully');
-      return true;
-    } catch (e) {
-      print('❌ Error accepting application: $e');
-      return false;
     }
+    
+    // IMPORTANT: Update the request with the accepted freelancer info
+    final requestRef = _firestore.collection('requests').doc(requestId);
+    
+    // First, check what's currently in the request
+    final requestDoc = await requestRef.get();
+    print('📝 Current request data: ${requestDoc.data()}');
+    
+    // Update the request
+    await requestRef.update({
+      'status': 'in_progress',
+      'acceptedFreelancerId': freelancerId,
+      'acceptedFreelancerName': freelancerName,
+    });
+    
+    // Verify the update worked
+    final updatedDoc = await requestRef.get();
+    print('📝 Updated request data: ${updatedDoc.data()}');
+    print('✅ Request updated - Status: in_progress');
+    print('✅ Accepted freelancer ID: $freelancerId');
+    print('✅ Accepted freelancer name: $freelancerName');
+    
+    return true;
+  } catch (e) {
+    print('❌ Error accepting application: $e');
+    return false;
   }
+}
   
   // Reject an application
   Future<bool> rejectApplication(String applicationId) async {
     try {
       print('📝 Rejecting application: $applicationId');
-      
       await _firestore.collection('applications').doc(applicationId).update({
         'status': 'rejected',
       });
-      
       print('✅ Application rejected successfully');
       return true;
     } catch (e) {
@@ -132,7 +153,7 @@ class ApplicationService {
     }
   }
   
-  // Check if user has already applied to a request
+  // Check if user has already applied
   Future<bool> hasApplied(String requestId) async {
     try {
       final userId = _auth.currentUser!.uid;
@@ -141,7 +162,6 @@ class ApplicationService {
           .where('requestId', isEqualTo: requestId)
           .where('freelancerId', isEqualTo: userId)
           .get();
-      
       return result.docs.isNotEmpty;
     } catch (e) {
       print('❌ Error checking application: $e');

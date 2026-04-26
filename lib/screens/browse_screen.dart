@@ -17,6 +17,11 @@ class _BrowseRequestsScreenState extends State<BrowseRequestsScreen> {
   final ApplicationService _applicationService = ApplicationService();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   String _selectedFilter = 'All';
+  String _searchQuery = '';
+  final TextEditingController _searchController = TextEditingController();
+
+  // Track which requests the user has applied to
+  Set<String> _appliedRequestIds = {};
 
   // Controllers for apply dialog
   final TextEditingController _proposalController = TextEditingController();
@@ -24,10 +29,43 @@ class _BrowseRequestsScreenState extends State<BrowseRequestsScreen> {
   String _selectedRequestId = '';
 
   @override
+  void initState() {
+    super.initState();
+    _loadAppliedRequests();
+  }
+
+  @override
   void dispose() {
     _proposalController.dispose();
     _priceController.dispose();
+    _searchController.dispose();
     super.dispose();
+  }
+
+  Future<void> _loadAppliedRequests() async {
+    final userId = _auth.currentUser?.uid;
+    if (userId == null) return;
+    
+    try {
+      final querySnapshot = await FirebaseFirestore.instance
+          .collection('applications')
+          .where('freelancerId', isEqualTo: userId)
+          .get();
+      
+      setState(() {
+        _appliedRequestIds = querySnapshot.docs
+            .map((doc) => (doc.data() as Map<String, dynamic>)['requestId'] as String)
+            .toSet();
+      });
+    } catch (e) {
+      print('Error loading applications: $e');
+    }
+  }
+
+  void _markAsApplied(String requestId) {
+    setState(() {
+      _appliedRequestIds.add(requestId);
+    });
   }
 
   @override
@@ -41,10 +79,7 @@ class _BrowseRequestsScreenState extends State<BrowseRequestsScreen> {
           children: [
             // Header
             Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16.0,
-                vertical: 12.0,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -55,11 +90,7 @@ class _BrowseRequestsScreenState extends State<BrowseRequestsScreen> {
                       shape: BoxShape.circle,
                       color: Color(0xFFF2F3FD),
                     ),
-                    child: const Icon(
-                      Icons.person_outline,
-                      size: 20,
-                      color: primaryColor,
-                    ),
+                    child: const Icon(Icons.person_outline, size: 20, color: primaryColor),
                   ),
                   Text(
                     'Browse Requests',
@@ -85,12 +116,29 @@ class _BrowseRequestsScreenState extends State<BrowseRequestsScreen> {
                       color: const Color(0xFFF2F3FD),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: const TextField(
+                    child: TextField(
+                      controller: _searchController,
+                      onChanged: (value) {
+                        setState(() {
+                          _searchQuery = value.toLowerCase();
+                        });
+                      },
                       decoration: InputDecoration(
                         hintText: 'Search requests...',
-                        prefixIcon: Icon(Icons.search, size: 20),
+                        prefixIcon: const Icon(Icons.search, size: 20),
+                        suffixIcon: _searchQuery.isNotEmpty
+                            ? IconButton(
+                                icon: const Icon(Icons.clear, size: 20),
+                                onPressed: () {
+                                  setState(() {
+                                    _searchQuery = '';
+                                    _searchController.clear();
+                                  });
+                                },
+                              )
+                            : null,
                         border: InputBorder.none,
-                        contentPadding: EdgeInsets.symmetric(vertical: 14),
+                        contentPadding: const EdgeInsets.symmetric(vertical: 14),
                       ),
                     ),
                   ),
@@ -100,8 +148,12 @@ class _BrowseRequestsScreenState extends State<BrowseRequestsScreen> {
                     child: Row(
                       children: [
                         _buildFilterChip('All', _selectedFilter == 'All'),
-                        _buildFilterChip('Nearby', _selectedFilter == 'Nearby'),
-                        _buildFilterChip('Urgent', _selectedFilter == 'Urgent'),
+                        _buildFilterChip('Plumbing', _selectedFilter == 'Plumbing'),
+                        _buildFilterChip('Electrician', _selectedFilter == 'Electrician'),
+                        _buildFilterChip('Cleaning', _selectedFilter == 'Cleaning'),
+                        _buildFilterChip('Moving', _selectedFilter == 'Moving'),
+                        _buildFilterChip('Tutoring', _selectedFilter == 'Tutoring'),
+                        _buildFilterChip('Design', _selectedFilter == 'Design'),
                       ],
                     ),
                   ),
@@ -154,14 +206,68 @@ class _BrowseRequestsScreenState extends State<BrowseRequestsScreen> {
                   final requests = snapshot.data!.docs;
                   final currentUserId = _auth.currentUser?.uid ?? '';
 
+                  // Apply filters
+                  var filteredRequests = requests.where((request) {
+                    final data = request.data() as Map<String, dynamic>;
+                    final title = data['title']?.toLowerCase() ?? '';
+                    final description = data['description']?.toLowerCase() ?? '';
+                    final category = data['category']?.toLowerCase() ?? '';
+                    final location = data['location']?.toLowerCase() ?? '';
+                    
+                    // Search filter
+                    if (_searchQuery.isNotEmpty) {
+                      final matchesSearch = title.contains(_searchQuery) ||
+                          description.contains(_searchQuery) ||
+                          category.contains(_searchQuery) ||
+                          location.contains(_searchQuery);
+                      if (!matchesSearch) return false;
+                    }
+                    
+                    // Category filter
+                    if (_selectedFilter != 'All' && category != _selectedFilter.toLowerCase()) {
+                      return false;
+                    }
+                    
+                    return true;
+                  }).toList();
+
+                  if (filteredRequests.isEmpty) {
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.search_off, size: 64, color: Colors.grey[400]),
+                          const SizedBox(height: 16),
+                          Text(
+                            'No matching requests',
+                            style: GoogleFonts.inter(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            'Try a different search term',
+                            style: GoogleFonts.inter(
+                              fontSize: 14,
+                              color: Colors.grey[500],
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+
                   return ListView.builder(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
-                    itemCount: requests.length,
+                    itemCount: filteredRequests.length,
                     itemBuilder: (context, index) {
-                      final request = requests[index];
+                      final request = filteredRequests[index];
                       final data = request.data() as Map<String, dynamic>;
 
                       final isOwnRequest = data['userId'] == currentUserId;
+                      final hasApplied = _appliedRequestIds.contains(request.id);
 
                       return _buildBrowseCard(
                         requestId: request.id,
@@ -172,6 +278,7 @@ class _BrowseRequestsScreenState extends State<BrowseRequestsScreen> {
                         description: data['description'] ?? '',
                         category: data['category'] ?? 'General',
                         isOwnRequest: isOwnRequest,
+                        hasApplied: hasApplied,
                       );
                     },
                   );
@@ -225,6 +332,7 @@ class _BrowseRequestsScreenState extends State<BrowseRequestsScreen> {
     required String description,
     required String category,
     required bool isOwnRequest,
+    required bool hasApplied,
   }) {
     const primaryColor = Color(0xFF005BBF);
 
@@ -424,6 +532,29 @@ class _BrowseRequestsScreenState extends State<BrowseRequestsScreen> {
                     ),
                   ),
                 )
+              else if (hasApplied)
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: Colors.green[100],
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.check_circle, size: 14, color: Colors.green[700]),
+                      const SizedBox(width: 4),
+                      Text(
+                        'Submitted',
+                        style: GoogleFonts.inter(
+                          fontSize: 12,
+                          color: Colors.green[700],
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                )
               else
                 ElevatedButton(
                   onPressed: () {
@@ -573,12 +704,12 @@ class _BrowseRequestsScreenState extends State<BrowseRequestsScreen> {
                                 );
 
                             if (success && context.mounted) {
+                              _markAsApplied(_selectedRequestId);
                               setState(() {
                                 isLoading = false;
                                 isSubmitted = true;
                               });
 
-                              // Show success message
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content: Text(
@@ -589,7 +720,6 @@ class _BrowseRequestsScreenState extends State<BrowseRequestsScreen> {
                                 ),
                               );
 
-                              // Close dialog after 1.5 seconds
                               Future.delayed(
                                 const Duration(milliseconds: 1500),
                                 () {
@@ -654,7 +784,7 @@ class _BrowseRequestsScreenState extends State<BrowseRequestsScreen> {
     );
   }
 
-  // Add this helper method to check if already applied
+  // Helper method to check if already applied
   Future<bool> _checkIfAlreadyApplied(String requestId) async {
     final userId = _auth.currentUser?.uid;
     if (userId == null) return false;

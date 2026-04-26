@@ -57,6 +57,8 @@ class _ApplicantsScreenState extends State<ApplicantsScreen> {
   Future<void> _acceptApplication(
     BuildContext context,
     String applicationId,
+    String freelancerId,
+    String freelancerName,
   ) async {
     showDialog(
       context: context,
@@ -67,6 +69,8 @@ class _ApplicantsScreenState extends State<ApplicantsScreen> {
     final success = await _applicationService.acceptApplication(
       applicationId,
       widget.requestId,
+      freelancerId,
+      freelancerName, // Pass the name here
     );
 
     if (context.mounted) Navigator.pop(context);
@@ -236,7 +240,8 @@ class _ApplicantsScreenState extends State<ApplicantsScreen> {
 
                     return _buildApplicantCard(
                       applicationId: application.id,
-                      freelancerId: data['freelancerId'] ?? '',
+                      freelancerId:
+                          data['freelancerId'] ?? '', // Make sure this exists
                       name: data['freelancerName'] ?? 'Unknown',
                       proposal: data['proposal'] ?? '',
                       price: '\$${data['proposedPrice']?.toString() ?? '0'}',
@@ -416,7 +421,16 @@ class _ApplicantsScreenState extends State<ApplicantsScreen> {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {
-                      _acceptApplication(context, applicationId);
+                      print('📝 Accept button pressed for:');
+                      print('   Application ID: $applicationId');
+                      print('   Freelancer ID: $freelancerId');
+                      print('   Freelancer Name: $name');
+                      _acceptApplication(
+                        context,
+                        applicationId,
+                        freelancerId,
+                        name,
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: primaryColor,

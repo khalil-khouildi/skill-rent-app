@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../services/request_service.dart';
+import '../services/review_service.dart';
 import 'applicants_screen.dart';
 
 class MyRequestsScreen extends StatefulWidget {
@@ -14,9 +15,112 @@ class MyRequestsScreen extends StatefulWidget {
 
 class _MyRequestsScreenState extends State<MyRequestsScreen> {
   final RequestService _requestService = RequestService();
+  final ReviewService _reviewService = ReviewService();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   String _selectedTab = 'All';
+
+  Future<void> _completeRequest(String requestId, String freelancerId, String freelancerName) async {
+    print('📝 Completing request: $requestId for freelancer: $freelancerName');
+    
+    final review = await _showRatingDialog(context, freelancerName);
+    if (review != null && context.mounted) {
+      final success = await _reviewService.leaveReview(
+        requestId: requestId,
+        freelancerId: freelancerId,
+        rating: review['rating']!,
+        comment: review['comment']!,
+      );
+      
+      if (success && context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('✅ Request completed! Thank you for your review.'),
+            backgroundColor: Colors.green,
+            duration: Duration(seconds: 3),
+          ),
+        );
+      } else if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('❌ Failed to complete request'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
+  Future<Map<String, dynamic>?> _showRatingDialog(BuildContext context, String freelancerName) async {
+  double rating = 5;
+  final TextEditingController commentController = TextEditingController();
   
+  return showDialog<Map<String, dynamic>>(
+    context: context,
+    barrierDismissible: false,
+    builder: (context) => StatefulBuilder(
+      builder: (context, setState) {
+        return AlertDialog(
+          title: Text('Complete Request with $freelancerName'),
+          content: SingleChildScrollView(  // Wrap with SingleChildScrollView
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text('How was your experience?', style: TextStyle(fontSize: 16)),
+                const SizedBox(height: 16),
+                Wrap(  // Use Wrap instead of Row to prevent overflow
+                  alignment: WrapAlignment.center,
+                  children: List.generate(5, (index) {
+                    return IconButton(
+                      onPressed: () {
+                        setState(() {
+                          rating = (index + 1).toDouble();
+                        });
+                      },
+                      icon: Icon(
+                        index < rating ? Icons.star : Icons.star_border,
+                        color: Colors.orange,
+                        size: 32,  // Reduced from 40
+                      ),
+                    );
+                  }),
+                ),
+                const SizedBox(height: 16),
+                TextField(
+                  controller: commentController,
+                  maxLines: 3,
+                  decoration: const InputDecoration(
+                    labelText: 'Write a review (optional)',
+                    hintText: 'Share your experience with this freelancer...',
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context, {
+                  'rating': rating,
+                  'comment': commentController.text.trim(),
+                });
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF005BBF),
+              ),
+              child: const Text('Complete'),
+            ),
+          ],
+        );
+      },
+    ),
+  );
+}
+
   @override
   Widget build(BuildContext context) {
     const primaryColor = Color(0xFF005BBF);
@@ -63,6 +167,7 @@ class _MyRequestsScreenState extends State<MyRequestsScreen> {
                   children: [
                     _buildTabChip('All', _selectedTab == 'All'),
                     _buildTabChip('Active', _selectedTab == 'Active'),
+                    _buildTabChip('In Progress', _selectedTab == 'In Progress'),
                     _buildTabChip('Completed', _selectedTab == 'Completed'),
                   ],
                 ),
@@ -125,6 +230,8 @@ class _MyRequestsScreenState extends State<MyRequestsScreen> {
                       filteredRequests.add(request);
                     } else if (_selectedTab == 'Active' && status == 'active') {
                       filteredRequests.add(request);
+                    } else if (_selectedTab == 'In Progress' && status == 'in_progress') {
+                      filteredRequests.add(request);
                     } else if (_selectedTab == 'Completed' && status == 'completed') {
                       filteredRequests.add(request);
                     }
@@ -146,9 +253,14 @@ class _MyRequestsScreenState extends State<MyRequestsScreen> {
                       final request = filteredRequests[index];
                       final data = request.data() as Map<String, dynamic>;
                       
+                      // Debug print to see what data we have
+                      print('📊 Request data: ${data.keys}');
+                      print('📊 Status: ${data['status']}');
+                      print('📊 Accepted Freelancer ID: ${data['acceptedFreelancerId']}');
+                      
                       return _buildRequestCard(
                         context,
-                        requestId: request.id,  // Pass the document ID
+                        requestId: request.id,
                         title: data['title'] ?? 'No title',
                         time: _formatTime(data['createdAt']),
                         status: data['status'] ?? 'active',
@@ -156,8 +268,8 @@ class _MyRequestsScreenState extends State<MyRequestsScreen> {
                         price: data['budget'] ?? 'N/A',
                         category: data['category'] ?? 'General',
                         hasApplicants: (data['applicantsCount'] ?? 0) > 0,
-                        statusBg: data['status'] == 'active' ? Colors.orange[100]! : Colors.green[100]!,
-                        statusText: data['status'] == 'active' ? Colors.orange[800]! : Colors.green[800]!,
+                        acceptedFreelancerId: data['acceptedFreelancerId'],
+                        acceptedFreelancerName: data['acceptedFreelancerName'],
                       );
                     },
                   );
@@ -218,7 +330,7 @@ class _MyRequestsScreenState extends State<MyRequestsScreen> {
 
   Widget _buildRequestCard(
     BuildContext context, {
-    required String requestId,  // Add this parameter
+    required String requestId,
     required String title,
     required String time,
     required String status,
@@ -226,10 +338,12 @@ class _MyRequestsScreenState extends State<MyRequestsScreen> {
     required String price,
     required String category,
     required bool hasApplicants,
-    required Color statusBg,
-    required Color statusText,
+    String? acceptedFreelancerId,
+    String? acceptedFreelancerName,
   }) {
     const primaryColor = Color(0xFF005BBF);
+    
+    print('🔴 Building card for status: $status, acceptedId: $acceptedFreelancerId');
     
     IconData getCategoryIcon() {
       switch (category.toLowerCase()) {
@@ -262,6 +376,33 @@ class _MyRequestsScreenState extends State<MyRequestsScreen> {
           return const Color(0xFFE0E2EC);
         default:
           return const Color(0xFFF2F3FD);
+      }
+    }
+
+    String getStatusText() {
+      switch (status) {
+        case 'active': return 'Active';
+        case 'in_progress': return 'In Progress';
+        case 'completed': return 'Completed';
+        default: return 'Active';
+      }
+    }
+
+    Color getStatusBgColor() {
+      switch (status) {
+        case 'active': return Colors.orange[100]!;
+        case 'in_progress': return Colors.blue[100]!;
+        case 'completed': return Colors.green[100]!;
+        default: return Colors.orange[100]!;
+      }
+    }
+
+    Color getStatusTextColor() {
+      switch (status) {
+        case 'active': return Colors.orange[800]!;
+        case 'in_progress': return Colors.blue[800]!;
+        case 'completed': return Colors.green[800]!;
+        default: return Colors.orange[800]!;
       }
     }
 
@@ -312,10 +453,10 @@ class _MyRequestsScreenState extends State<MyRequestsScreen> {
               ),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(color: statusBg, borderRadius: BorderRadius.circular(20)),
+                decoration: BoxDecoration(color: getStatusBgColor(), borderRadius: BorderRadius.circular(20)),
                 child: Text(
-                  status == 'active' ? 'Active' : 'Completed',
-                  style: GoogleFonts.inter(fontSize: 10, color: statusText, fontWeight: FontWeight.bold),
+                  getStatusText(),
+                  style: GoogleFonts.inter(fontSize: 10, color: getStatusTextColor(), fontWeight: FontWeight.bold),
                 ),
               ),
             ],
@@ -337,7 +478,8 @@ class _MyRequestsScreenState extends State<MyRequestsScreen> {
                 price,
                 style: GoogleFonts.inter(fontWeight: FontWeight.bold, color: primaryColor),
               ),
-              if (hasApplicants && status == 'active')
+              // View Applicants button for active requests
+              if (status == 'active' && hasApplicants)
                 ElevatedButton(
                   onPressed: () {
                     Navigator.push(
@@ -358,10 +500,55 @@ class _MyRequestsScreenState extends State<MyRequestsScreen> {
                   ),
                   child: const Text('View Applicants'),
                 )
+              // Edit button for active requests with no applicants
               else if (status == 'active')
                 TextButton(
                   onPressed: () {},
                   child: const Text('Edit Request'),
+                )
+              // COMPLETE BUTTON - THIS IS WHAT YOU NEED
+              else if (status == 'in_progress')
+                ElevatedButton(
+                  onPressed: () {
+                    if (acceptedFreelancerId != null) {
+                      _completeRequest(requestId, acceptedFreelancerId, acceptedFreelancerName ?? 'Freelancer');
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Error: No freelancer assigned')),
+                      );
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    foregroundColor: Colors.white,
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                  ),
+                  child: const Text('Complete'),
+                )
+              // Completed badge
+              else if (status == 'completed')
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: Colors.green[100],
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.check_circle, size: 16, color: Colors.green[700]),
+                      const SizedBox(width: 4),
+                      Text(
+                        'Completed',
+                        style: GoogleFonts.inter(
+                          fontSize: 12,
+                          color: Colors.green[700],
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
             ],
           ),
