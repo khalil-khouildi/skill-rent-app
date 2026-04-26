@@ -1,8 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import '../services/application_service.dart';
 
-class ApplicantsScreen extends StatelessWidget {
-  const ApplicantsScreen({super.key});
+class ApplicantsScreen extends StatefulWidget {
+  const ApplicantsScreen({super.key, required this.requestId, required this.requestTitle});
+  
+  final String requestId;
+  final String requestTitle;
+
+  @override
+  State<ApplicantsScreen> createState() => _ApplicantsScreenState();
+}
+
+class _ApplicantsScreenState extends State<ApplicantsScreen> {
+  final ApplicationService _applicationService = ApplicationService();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -23,125 +37,92 @@ class ApplicantsScreen extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Task Summary
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: const Color(0xFFE0E2EC)),
-              ),
+      body: StreamBuilder<QuerySnapshot>(
+        stream: _applicationService.getApplicationsForRequest(widget.requestId),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Center(
+              child: Text('Error: ${snapshot.error}'),
+            );
+          }
+          
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          
+          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+            return Center(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFF2F3FD),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Text(
-                      'Plumbing',
-                      style: GoogleFonts.inter(fontSize: 12, color: primaryColor, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
+                  Icon(Icons.people_outline, size: 64, color: Colors.grey[400]),
+                  const SizedBox(height: 16),
                   Text(
-                    'Fix Leaking Kitchen Sink Pipe',
-                    style: GoogleFonts.inter(fontSize: 20, fontWeight: FontWeight.bold),
+                    'No applicants yet',
+                    style: GoogleFonts.inter(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey[600],
+                    ),
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Budget: \$80 - \$120 • Needed by tomorrow',
-                    style: GoogleFonts.inter(color: Colors.grey[600]),
+                    'Wait for freelancers to apply',
+                    style: GoogleFonts.inter(
+                      fontSize: 14,
+                      color: Colors.grey[500],
+                    ),
                   ),
                 ],
               ),
-            ),
-            const SizedBox(height: 32),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  '3 people applied',
-                  style: GoogleFonts.inter(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                Row(
-                  children: [
-                    const Icon(Icons.sort, size: 18, color: Colors.grey),
-                    const SizedBox(width: 4),
-                    Text(
-                      'Best Match',
-                      style: GoogleFonts.inter(fontSize: 14, color: Colors.grey[600]),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            _buildApplicantCard(
-              context,
-              'Michael Chen',
-              '4.9',
-              '124',
-              '1.2km away',
-              'I can help you with this right away. I have 10 years of plumbing experience and carry all necessary tools for under-sink repairs.',
-              '\$95',
-              'https://lh3.googleusercontent.com/aida-public/AB6AXuACT5XlXD_biKIdhbgvk8hmCuafCIg2C4EZtMIskQZh9E8IcIeKqVNYEvhsxhprq4Tti1J3JFDnJVlHi8KpphXk6_bCqP21DaGuyFaKDcBzXUdUmEvcIQop08DdcVKepumFV1ujApnIMtKTg49nG0z7dP42Q22N8OnuJPr2iY-yZPjJ-WqyKs0mcyi5VMsINYGBnUXyhVfWKRrtzpuqXQsmM58xCrtBD1PZcY0cEuM4di4X0FD5eHlRK0gedNpmnUvxsqG4AJ5pjzW8',
-              isAccepted: true,
-            ),
-            const SizedBox(height: 16),
-            _buildApplicantCard(
-              context,
-              'Sarah Jenkins',
-              '4.7',
-              '86',
-              '3.5km away',
-              'Available tomorrow morning. Sounds like a standard P-trap issue, I keep replacement parts stocked in my van.',
-              '\$110',
-              'https://lh3.googleusercontent.com/aida-public/AB6AXuCA63d5PYpQ_BWT0QTdckllwi45L9GZamLZFwA0fR1CEV-vZHmGKnSBMISQdNelea0ZJ1bmtVAw5fAYxvLZLyVnKKLU2sx9rBjM3Q7uQkpsVeLkYfIWwuOGAM755QpagV0FolAzKqcziBTHaPlZW3BM37P0PoRb_Kuz-mX40EIu-HVoBi6B-fBQKbZMuilFvAYBwzm0CE8XkSj8tqhSuLNnAxOb-PmwtnXwmtSGwt3v3N-NSkN1DGVmG-4zf38YtkelbNw5qmG6vG-u',
-            ),
-            const SizedBox(height: 16),
-            _buildApplicantCard(
-              context,
-              'David Barnes',
-              '4.2',
-              '12',
-              '5.8km away',
-              'I can fix it by the weekend. I usually do bigger jobs but have an opening on Saturday afternoon if you can wait.',
-              '\$80',
-              'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
-            ),
-          ],
-        ),
+            );
+          }
+          
+          final applicants = snapshot.data!.docs;
+          
+          return ListView.builder(
+            padding: const EdgeInsets.all(20),
+            itemCount: applicants.length,
+            itemBuilder: (context, index) {
+              final application = applicants[index];
+              final data = application.data() as Map<String, dynamic>;
+              
+              return _buildApplicantCard(
+                applicationId: application.id,
+                name: data['freelancerName'] ?? 'Unknown',
+                proposal: data['proposal'] ?? '',
+                price: '\$${data['proposedPrice']?.toString() ?? '0'}',
+                status: data['status'] ?? 'pending',
+              );
+            },
+          );
+        },
       ),
     );
   }
 
-  Widget _buildApplicantCard(
-    BuildContext context,
-    String name,
-    String rating,
-    String reviews,
-    String distance,
-    String message,
-    String price,
-    String avatarUrl, {
-    bool isAccepted = false,
+  Widget _buildApplicantCard({
+    required String applicationId,
+    required String name,
+    required String proposal,
+    required String price,
+    required String status,
   }) {
     const primaryColor = Color(0xFF005BBF);
-
+    final isPending = status == 'pending';
+    
     return Container(
+      margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: isAccepted ? primaryColor : const Color(0xFFE0E2EC), width: isAccepted ? 2 : 1),
+        border: Border.all(
+          color: status == 'accepted' ? primaryColor : const Color(0xFFE0E2EC),
+          width: status == 'accepted' ? 2 : 1,
+        ),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
@@ -153,13 +134,16 @@ class ApplicantsScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (isAccepted)
+          if (status == 'accepted')
             Align(
               alignment: Alignment.topRight,
               child: Container(
                 margin: const EdgeInsets.only(bottom: 12),
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                decoration: BoxDecoration(color: primaryColor, borderRadius: BorderRadius.circular(8)),
+                decoration: BoxDecoration(
+                  color: primaryColor,
+                  borderRadius: BorderRadius.circular(8),
+                ),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -167,7 +151,11 @@ class ApplicantsScreen extends StatelessWidget {
                     const SizedBox(width: 4),
                     Text(
                       'Accepted',
-                      style: GoogleFonts.inter(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
+                      style: GoogleFonts.inter(
+                        color: Colors.white,
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ],
                 ),
@@ -176,7 +164,11 @@ class ApplicantsScreen extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CircleAvatar(radius: 28, backgroundImage: NetworkImage(avatarUrl)),
+              CircleAvatar(
+                radius: 28,
+                backgroundColor: const Color(0xFFF2F3FD),
+                child: Icon(Icons.person, size: 28, color: Colors.grey[600]),
+              ),
               const SizedBox(width: 16),
               Expanded(
                 child: Column(
@@ -184,17 +176,26 @@ class ApplicantsScreen extends StatelessWidget {
                   children: [
                     Text(
                       name,
-                      style: GoogleFonts.inter(fontSize: 18, fontWeight: FontWeight.bold),
+                      style: GoogleFonts.inter(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                    const SizedBox(height: 4),
-                    Row(
-                      children: [
-                        const Icon(Icons.star, color: Colors.orange, size: 16),
-                        Text(' $rating ($reviews)', style: GoogleFonts.inter(fontSize: 12, fontWeight: FontWeight.bold)),
-                        const SizedBox(width: 12),
-                        const Icon(Icons.location_on, color: Colors.grey, size: 16),
-                        Text(' $distance', style: GoogleFonts.inter(fontSize: 12, color: Colors.grey[600])),
-                      ],
+                    const SizedBox(height: 8),
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFF2F3FD),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text(
+                        '"$proposal"',
+                        style: GoogleFonts.inter(
+                          fontSize: 13,
+                          color: Colors.grey[800],
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -202,57 +203,128 @@ class ApplicantsScreen extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Text('Proposed', style: GoogleFonts.inter(fontSize: 10, color: Colors.grey)),
-                  Text(price, style: GoogleFonts.inter(fontSize: 24, fontWeight: FontWeight.bold, color: primaryColor)),
+                  Text(
+                    'Proposed',
+                    style: GoogleFonts.inter(fontSize: 10, color: Colors.grey),
+                  ),
+                  Text(
+                    price,
+                    style: GoogleFonts.inter(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: primaryColor,
+                    ),
+                  ),
                 ],
               ),
             ],
           ),
-          const SizedBox(height: 16),
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: const Color(0xFFF2F3FD),
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: const Color(0xFFD8E2FF)),
+          if (isPending) ...[
+            const SizedBox(height: 20),
+            Row(
+              children: [
+                Expanded(
+                  child: OutlinedButton(
+                    onPressed: () {
+                      _showRejectDialog(context, applicationId);
+                    },
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: Colors.red,
+                      side: const BorderSide(color: Colors.red),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: const Text('Reject'),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      _acceptApplication(context, applicationId);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: primaryColor,
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: const Text('Accept'),
+                  ),
+                ),
+              ],
             ),
-            child: Text(
-              '"$message"',
-              style: GoogleFonts.inter(fontSize: 13, color: Colors.grey[800], fontStyle: FontStyle.italic),
-            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  void _acceptApplication(BuildContext context, String applicationId) async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const Center(child: CircularProgressIndicator()),
+    );
+    
+    final success = await _applicationService.acceptApplication(
+      applicationId,
+      widget.requestId,
+    );
+    
+    if (context.mounted) Navigator.pop(context);
+    
+    if (success && context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('✅ Freelancer accepted!'),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } else if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('❌ Failed to accept'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  void _showRejectDialog(BuildContext context, String applicationId) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Reject Application'),
+        content: const Text('Are you sure you want to reject this applicant?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
           ),
-          const SizedBox(height: 20),
-          Row(
-            children: [
-              Expanded(
-                child: OutlinedButton(
-                  onPressed: () {},
-                  style: OutlinedButton.styleFrom(
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          TextButton(
+            onPressed: () async {
+              Navigator.pop(context);
+              
+              await _applicationService.rejectApplication(applicationId);
+              
+              if (context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Application rejected'),
+                    backgroundColor: Colors.orange,
                   ),
-                  child: const Text('View Profile'),
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: ElevatedButton(
-                  onPressed: () {
-                    if (isAccepted) {
-                      Navigator.pushNamed(context, '/chat');
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: isAccepted ? primaryColor : const Color(0xFFEC5B13),
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                  ),
-                  child: Text(isAccepted ? 'Message' : 'Accept'),
-                ),
-              ),
-            ],
+                );
+              }
+            },
+            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            child: const Text('Reject'),
           ),
         ],
       ),
     );
   }
+  
 }

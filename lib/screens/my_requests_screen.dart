@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../services/request_service.dart';
+import 'applicants_screen.dart';
 
 class MyRequestsScreen extends StatefulWidget {
   const MyRequestsScreen({super.key});
@@ -69,7 +70,6 @@ class _MyRequestsScreenState extends State<MyRequestsScreen> {
             ),
             const SizedBox(height: 16),
             
-            // Requests List from Firebase
             Expanded(
               child: StreamBuilder<QuerySnapshot>(
                 stream: _requestService.getUserRequests(userId),
@@ -116,7 +116,6 @@ class _MyRequestsScreenState extends State<MyRequestsScreen> {
                   
                   final requests = snapshot.data!.docs;
                   
-                  // Filter by tab
                   List<QueryDocumentSnapshot> filteredRequests = [];
                   for (var request in requests) {
                     final data = request.data() as Map<String, dynamic>;
@@ -149,6 +148,7 @@ class _MyRequestsScreenState extends State<MyRequestsScreen> {
                       
                       return _buildRequestCard(
                         context,
+                        requestId: request.id,  // Pass the document ID
                         title: data['title'] ?? 'No title',
                         time: _formatTime(data['createdAt']),
                         status: data['status'] ?? 'active',
@@ -218,6 +218,7 @@ class _MyRequestsScreenState extends State<MyRequestsScreen> {
 
   Widget _buildRequestCard(
     BuildContext context, {
+    required String requestId,  // Add this parameter
     required String title,
     required String time,
     required String status,
@@ -230,7 +231,6 @@ class _MyRequestsScreenState extends State<MyRequestsScreen> {
   }) {
     const primaryColor = Color(0xFF005BBF);
     
-    // Get icon based on category
     IconData getCategoryIcon() {
       switch (category.toLowerCase()) {
         case 'plumbing':
@@ -340,7 +340,15 @@ class _MyRequestsScreenState extends State<MyRequestsScreen> {
               if (hasApplicants && status == 'active')
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, '/applicants');
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ApplicantsScreen(
+                          requestId: requestId,
+                          requestTitle: title,
+                        ),
+                      ),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: primaryColor,

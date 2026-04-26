@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../services/request_service.dart';
+import '../services/application_service.dart';
 
 class BrowseRequestsScreen extends StatefulWidget {
   const BrowseRequestsScreen({super.key});
@@ -13,9 +14,22 @@ class BrowseRequestsScreen extends StatefulWidget {
 
 class _BrowseRequestsScreenState extends State<BrowseRequestsScreen> {
   final RequestService _requestService = RequestService();
+  final ApplicationService _applicationService = ApplicationService();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   String _selectedFilter = 'All';
   
+  // Controllers for apply dialog
+  final TextEditingController _proposalController = TextEditingController();
+  final TextEditingController _priceController = TextEditingController();
+  String _selectedRequestId = '';
+
+  @override
+  void dispose() {
+    _proposalController.dispose();
+    _priceController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     const primaryColor = Color(0xFF005BBF);
@@ -89,7 +103,7 @@ class _BrowseRequestsScreenState extends State<BrowseRequestsScreen> {
             ),
             const SizedBox(height: 16),
             
-            // Request List - REAL DATA FROM FIREBASE
+            // Request List from Firebase
             Expanded(
               child: StreamBuilder<QuerySnapshot>(
                 stream: _requestService.getActiveRequests(),
@@ -144,17 +158,17 @@ class _BrowseRequestsScreenState extends State<BrowseRequestsScreen> {
                       final request = requests[index];
                       final data = request.data() as Map<String, dynamic>;
                       
-                      // Check if this request belongs to the current user
                       final isOwnRequest = data['userId'] == currentUserId;
                       
                       return _buildBrowseCard(
+                        requestId: request.id,
                         title: data['title'] ?? 'No title',
                         location: data['location'] ?? 'Unknown location',
                         budget: data['budget'] ?? 'N/A',
                         urgency: data['urgency'] ?? '',
                         description: data['description'] ?? '',
                         category: data['category'] ?? 'General',
-                        isOwnRequest: isOwnRequest,  // Pass this flag
+                        isOwnRequest: isOwnRequest,
                       );
                     },
                   );
@@ -196,17 +210,17 @@ class _BrowseRequestsScreenState extends State<BrowseRequestsScreen> {
   }
 
   Widget _buildBrowseCard({
+    required String requestId,
     required String title,
     required String location,
     required String budget,
     required String urgency,
     required String description,
     required String category,
-    required bool isOwnRequest,  // New parameter
+    required bool isOwnRequest,
   }) {
     const primaryColor = Color(0xFF005BBF);
     
-    // Get icon based on category
     IconData getCategoryIcon() {
       switch (category.toLowerCase()) {
         case 'plumbing':
@@ -363,9 +377,7 @@ class _BrowseRequestsScreenState extends State<BrowseRequestsScreen> {
                 ),
               ),
               const Spacer(),
-              // Show different button based on ownership
               if (isOwnRequest)
-                // Your own request - show "Your Request" badge instead of Apply button
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   decoration: BoxDecoration(
@@ -382,16 +394,9 @@ class _BrowseRequestsScreenState extends State<BrowseRequestsScreen> {
                   ),
                 )
               else
-                // Someone else's request - show Apply button
                 ElevatedButton(
                   onPressed: () {
-                    // TODO: Implement apply functionality
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Apply feature coming soon!'),
-                        duration: Duration(seconds: 1),
-                      ),
-                    );
+                    _showApplyDialog(context, requestId: requestId);
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFFfe6a34),
@@ -407,4 +412,201 @@ class _BrowseRequestsScreenState extends State<BrowseRequestsScreen> {
       ),
     );
   }
+
+  void _showApplyDialog(BuildContext context, {required String requestId}) {
+  _selectedRequestId = requestId;
+  _proposalController.clear();
+  _priceController.clear();
+  
+  bool isLoading = false;
+  bool isSubmitted = false;
+  
+  // Check if already applied
+  _checkIfAlreadyApplied(requestId).then((alreadyApplied) {
+    if (alreadyApplied && context.mounted) {
+      isSubmitted = true;
+      setState(() {});
+    }
+  });
+  
+  showDialog(
+    context: context,
+    barrierDismissible: true,
+    builder: (context) {
+      return StatefulBuilder(
+        builder: (context, setState) {
+          return AlertDialog(
+            title: const Text('Apply for this job'),
+            content: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (isSubmitted)
+                    Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: Colors.green[50],
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: Colors.green),
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(Icons.check_circle, color: Colors.green),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Text(
+                              'You have already applied to this request',
+                              style: GoogleFonts.inter(
+                                fontSize: 14,
+                                color: Colors.green[800],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  if (!isSubmitted) ...[
+                    TextField(
+                      controller: _proposalController,
+                      maxLines: 4,
+                      decoration: const InputDecoration(
+                        labelText: 'Why are you the right person?',
+                        hintText: 'Describe your skills and experience...',
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    TextField(
+                      controller: _priceController,
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(
+                        labelText: 'Your proposed price',
+                        prefixText: '\$ ',
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: isLoading ? null : () {
+                  Navigator.pop(context);
+                },
+                child: const Text('Cancel'),
+              ),
+              ElevatedButton(
+                onPressed: isSubmitted || isLoading
+                    ? null
+                    : () async {
+                        // Validate inputs
+                        if (_proposalController.text.trim().isEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Please tell why you are suitable')),
+                          );
+                          return;
+                        }
+                        
+                        final price = double.tryParse(_priceController.text.trim());
+                        if (price == null || price <= 0) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Please enter a valid price')),
+                          );
+                          return;
+                        }
+                        
+                        // Set loading state
+                        setState(() {
+                          isLoading = true;
+                        });
+                        
+                        try {
+                          final success = await _applicationService.applyToRequest(
+                            requestId: _selectedRequestId,
+                            proposal: _proposalController.text.trim(),
+                            proposedPrice: price,
+                          );
+                          
+                          if (success && context.mounted) {
+                            setState(() {
+                              isLoading = false;
+                              isSubmitted = true;
+                            });
+                            
+                            // Show success message
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('✅ Application submitted successfully!'),
+                                backgroundColor: Colors.green,
+                                duration: Duration(seconds: 2),
+                              ),
+                            );
+                            
+                            // Close dialog after 1.5 seconds
+                            Future.delayed(const Duration(milliseconds: 1500), () {
+                              if (context.mounted) {
+                                Navigator.pop(context);
+                              }
+                            });
+                          } else if (context.mounted) {
+                            setState(() {
+                              isLoading = false;
+                            });
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('❌ Failed to apply. You may have already applied.'),
+                                backgroundColor: Colors.red,
+                                duration: Duration(seconds: 2),
+                              ),
+                            );
+                          }
+                        } catch (e) {
+                          if (context.mounted) {
+                            setState(() {
+                              isLoading = false;
+                            });
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Error: $e'),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                          }
+                        }
+                      },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: isSubmitted ? Colors.green : const Color(0xFFfe6a34),
+                  foregroundColor: Colors.white,
+                  minimumSize: const Size(120, 40),
+                ),
+                child: isLoading
+                    ? const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: Colors.white,
+                        ),
+                      )
+                    : isSubmitted
+                        ? const Text('✓ Submitted')
+                        : const Text('Submit'),
+              ),
+            ],
+          );
+        },
+      );
+    },
+  );
+}
+
+// Add this helper method to check if already applied
+Future<bool> _checkIfAlreadyApplied(String requestId) async {
+  final userId = _auth.currentUser?.uid;
+  if (userId == null) return false;
+  
+  final existing = await _applicationService.hasApplied(requestId);
+  return existing;
+}
 }
