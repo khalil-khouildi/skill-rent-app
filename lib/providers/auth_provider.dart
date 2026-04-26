@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthProvider extends ChangeNotifier {
   User? _user;
@@ -57,6 +58,51 @@ class AuthProvider extends ChangeNotifier {
     }
   }
   
+  Future<bool> signInWithGoogle() async {
+    try {
+      final GoogleSignIn googleSignIn = GoogleSignIn();
+      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+      if (googleUser == null) return false;
+
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      UserCredential result = await _auth.signInWithCredential(credential);
+      
+      // Check if user exists in Firestore
+      DocumentSnapshot doc = await _firestore.collection('users').doc(result.user!.uid).get();
+      if (!doc.exists) {
+        // Create new user profile
+        await _firestore.collection('users').doc(result.user!.uid).set({
+          'uid': result.user!.uid,
+          'fullName': result.user!.displayName ?? 'Google User',
+          'email': result.user!.email ?? '',
+          'role': '',
+          'createdAt': FieldValue.serverTimestamp(),
+          'avatarUrl': result.user!.photoURL ?? '',
+          'rating': 0.0,
+          'totalReviews': 0,
+          'bio': '',
+          'location': '',
+          'missionsCompleted': '0',
+          'successRate': '0',
+        });
+      }
+      
+      _user = result.user;
+      await _loadUserData();
+      notifyListeners();
+      return true;
+    } catch (e) {
+      print('Google Sign-In error: $e');
+      return false;
+    }
+  }
+
   Future<bool> register({
     required String email,
     required String password,

@@ -1,174 +1,252 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import '../services/request_service.dart';
 
-class BrowseRequestsScreen extends StatelessWidget {
+class BrowseRequestsScreen extends StatefulWidget {
   const BrowseRequestsScreen({super.key});
 
   @override
+  State<BrowseRequestsScreen> createState() => _BrowseRequestsScreenState();
+}
+
+class _BrowseRequestsScreenState extends State<BrowseRequestsScreen> {
+  final RequestService _requestService = RequestService();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  String _selectedFilter = 'All';
+  
+  @override
   Widget build(BuildContext context) {
     const primaryColor = Color(0xFF005BBF);
-    const onBackground = Color(0xFF191C23);
 
-    return SafeArea(
-      child: Column(
-        children: [
-          // Header
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  width: 32,
-                  height: 32,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                      image: NetworkImage('https://lh3.googleusercontent.com/aida-public/AB6AXuBrk3VcqOz0NBDvm56UFLeVSlkSu8d_Fx7fkiYuAGwxEsjfy1-2idX539BNRdfQWt5WXz_Ck5jEKJyaOEyRFjOCh5E3ljP-Fr4F_iIoR1R9wkEy2sHkyrodziYOaieEz-w3bugYdT36wrMIBPSAFhvicl7AbP1ywxreYQnkfISKHEINEvSuIsq41Y1k8pOJ7I4MOsCkZRE3IScz72ed-yjWIITCucuV1KSnYpR31zQMbPVairriV0PxQAsPhNJAbtcptj4HLDGIXXRt'),
-                      fit: BoxFit.cover,
+    return Scaffold(
+      backgroundColor: const Color(0xFFF8F9FA),
+      body: SafeArea(
+        child: Column(
+          children: [
+            // Header
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: 32,
+                    height: 32,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Color(0xFFF2F3FD),
+                    ),
+                    child: const Icon(Icons.person_outline, size: 20, color: primaryColor),
+                  ),
+                  Text(
+                    'Browse Requests',
+                    style: GoogleFonts.inter(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w900,
+                      color: primaryColor,
                     ),
                   ),
-                ),
-                Text(
-                  'Skill Rent',
-                  style: GoogleFonts.inter(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w900,
-                    color: primaryColor,
-                    letterSpacing: -1,
-                  ),
-                ),
-                const Icon(Icons.notifications_outlined, color: primaryColor),
-              ],
+                  const Icon(Icons.notifications_outlined, color: primaryColor),
+                ],
+              ),
             ),
-          ),
-          // Search and Filter
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Column(
-              children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFF2F3FD),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: 'Search requests...',
-                      prefixIcon: const Icon(Icons.search, size: 20),
-                      suffixIcon: const Icon(Icons.tune, size: 20),
-                      border: InputBorder.none,
-                      contentPadding: const EdgeInsets.symmetric(vertical: 14),
+            
+            // Search and Filter
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Column(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFF2F3FD),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: const TextField(
+                      decoration: InputDecoration(
+                        hintText: 'Search requests...',
+                        prefixIcon: Icon(Icons.search, size: 20),
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.symmetric(vertical: 14),
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 12),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      _buildFilterChip('All', true),
-                      _buildFilterChip('Nearby', false),
-                      _buildFilterChip('High Budget', false),
-                      _buildFilterChip('Urgent', false),
-                    ],
+                  const SizedBox(height: 12),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        _buildFilterChip('All', _selectedFilter == 'All'),
+                        _buildFilterChip('Nearby', _selectedFilter == 'Nearby'),
+                        _buildFilterChip('Urgent', _selectedFilter == 'Urgent'),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          const SizedBox(height: 16),
-          // Request List
-          Expanded(
-            child: ListView(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              children: [
-                _buildBrowseCard(
-                  'Emergency Pipe Repair',
-                  'Brooklyn, 2.5km',
-                  '\$150-250',
-                  'Urgent',
-                  'Sarah J.',
-                  '4.9',
-                  '12 reviews',
-                  Icons.plumbing,
-                  Colors.orange[100]!,
-                  Colors.orange[700]!,
-                  'https://lh3.googleusercontent.com/aida-public/AB6AXuD7yngHcpC5AXH9fhZwjFkPEgC28H3w7MbhqlLtlVzaS8akew1uoPtr6ahRYeUEPIpSCEFV9L-dGm_AzlgvwIEr7UJy8s0GwRqTXoDACxE7g3nF3iOUfhtbMzv7zWSP1fXVDbNxwmoiVdAKXlz40jsaTfNyAM8c5xJkc4w5vct_4WhU9_bbVy39kBV6XCvQ29nS-26EgH22BoTmZ-tZE_rKZ9_3gyItKwMowvJVtYn1w9W26aDm7y0o9Mv4FaWX8XrumTRH_I1Ea4bE',
-                ),
-                const SizedBox(height: 16),
-                _buildBrowseCard(
-                  'Interior Painting',
-                  'Queens, 5.1km',
-                  '\$400-600',
-                  'Flexible',
-                  'Michael R.',
-                  '5.0',
-                  '3 reviews',
-                  Icons.brush,
-                  Colors.blue[100]!,
-                  Colors.blue[700]!,
-                  'https://lh3.googleusercontent.com/aida-public/AB6AXuAuZug3ozDkW9NHKK4wI3wUJZJab2giDshpCWcwYfX6NV2Z95cWZfbmx0S9sHaLfVjt4j4gGGO8aaLF0KJWR9rePsN_qLPKmBO1T1oAJDhfTFjl5ThvX_UjM5VBRsezFJLVgmdqNKyGXPoIoV0TQz_k6gl7PFMQCVTd8tUF0UOahEmESpWrDsM4miPJ_ejU-MPl75TH22TFeKWBANBVg2YI1mmAo4FqJgcBBBjz55Sj5aHjmcxmyKBxgzJXrfjK_o7AUfqQMoasNn7a',
-                ),
-                const SizedBox(height: 16),
-                _buildBrowseCard(
-                  'Assemble IKEA Furniture',
-                  'Manhattan, 1.2km',
-                  '\$80-120',
-                  '',
-                  'Amanda L.',
-                  'New Client',
-                  '',
-                  Icons.chair,
-                  Colors.purple[100]!,
-                  Colors.purple[700]!,
-                  'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
-                ),
-                const SizedBox(height: 80), // Space for bottom nav
-              ],
+            const SizedBox(height: 16),
+            
+            // Request List - REAL DATA FROM FIREBASE
+            Expanded(
+              child: StreamBuilder<QuerySnapshot>(
+                stream: _requestService.getActiveRequests(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return Center(
+                      child: Text('Error: ${snapshot.error}'),
+                    );
+                  }
+                  
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  
+                  if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.inbox, size: 64, color: Colors.grey[400]),
+                          const SizedBox(height: 16),
+                          Text(
+                            'No requests yet',
+                            style: GoogleFonts.inter(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            'Be the first to post a request!',
+                            style: GoogleFonts.inter(
+                              fontSize: 14,
+                              color: Colors.grey[500],
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                  
+                  final requests = snapshot.data!.docs;
+                  final currentUserId = _auth.currentUser?.uid ?? '';
+                  
+                  return ListView.builder(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    itemCount: requests.length,
+                    itemBuilder: (context, index) {
+                      final request = requests[index];
+                      final data = request.data() as Map<String, dynamic>;
+                      
+                      // Check if this request belongs to the current user
+                      final isOwnRequest = data['userId'] == currentUserId;
+                      
+                      return _buildBrowseCard(
+                        title: data['title'] ?? 'No title',
+                        location: data['location'] ?? 'Unknown location',
+                        budget: data['budget'] ?? 'N/A',
+                        urgency: data['urgency'] ?? '',
+                        description: data['description'] ?? '',
+                        category: data['category'] ?? 'General',
+                        isOwnRequest: isOwnRequest,  // Pass this flag
+                      );
+                    },
+                  );
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildFilterChip(String label, bool isSelected) {
     const primaryColor = Color(0xFF005BBF);
-    return Container(
-      margin: const EdgeInsets.only(right: 8),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      decoration: BoxDecoration(
-        color: isSelected ? const Color(0xFFD8E2FF) : const Color(0xFFF2F3FD),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: isSelected ? primaryColor : Colors.transparent),
-      ),
-      child: Text(
-        label,
-        style: GoogleFonts.inter(
-          fontSize: 12,
-          fontWeight: FontWeight.w600,
-          color: isSelected ? const Color(0xFF001A41) : const Color(0xFF414754),
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _selectedFilter = label;
+        });
+      },
+      child: Container(
+        margin: const EdgeInsets.only(right: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        decoration: BoxDecoration(
+          color: isSelected ? const Color(0xFFD8E2FF) : const Color(0xFFF2F3FD),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: isSelected ? primaryColor : Colors.transparent),
+        ),
+        child: Text(
+          label,
+          style: GoogleFonts.inter(
+            fontSize: 12,
+            fontWeight: FontWeight.w600,
+            color: isSelected ? const Color(0xFF001A41) : const Color(0xFF414754),
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildBrowseCard(
-    String title,
-    String location,
-    String budget,
-    String tag,
-    String clientName,
-    String rating,
-    String reviews,
-    IconData icon,
-    Color iconBg,
-    Color iconColor,
-    String avatarUrl,
-  ) {
+  Widget _buildBrowseCard({
+    required String title,
+    required String location,
+    required String budget,
+    required String urgency,
+    required String description,
+    required String category,
+    required bool isOwnRequest,  // New parameter
+  }) {
+    const primaryColor = Color(0xFF005BBF);
+    
+    // Get icon based on category
+    IconData getCategoryIcon() {
+      switch (category.toLowerCase()) {
+        case 'plumbing':
+          return Icons.plumbing;
+        case 'electrician':
+          return Icons.electrical_services;
+        case 'cleaning':
+          return Icons.cleaning_services;
+        case 'moving':
+          return Icons.local_shipping;
+        case 'tutoring':
+          return Icons.school;
+        case 'design':
+          return Icons.design_services;
+        default:
+          return Icons.build;
+      }
+    }
+    
+    Color getCategoryColor() {
+      switch (category.toLowerCase()) {
+        case 'plumbing':
+          return Colors.orange;
+        case 'electrician':
+          return Colors.amber;
+        case 'cleaning':
+          return Colors.blue;
+        case 'moving':
+          return Colors.purple;
+        case 'tutoring':
+          return Colors.green;
+        case 'design':
+          return Colors.pink;
+        default:
+          return primaryColor;
+      }
+    }
+    
     return Container(
+      margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -182,6 +260,7 @@ class BrowseRequestsScreen extends StatelessWidget {
         ],
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -190,10 +269,10 @@ class BrowseRequestsScreen extends StatelessWidget {
                 width: 48,
                 height: 48,
                 decoration: BoxDecoration(
-                  color: iconBg,
+                  color: getCategoryColor().withOpacity(0.1),
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: Icon(icon, color: iconColor),
+                child: Icon(getCategoryIcon(), color: getCategoryColor()),
               ),
               const SizedBox(width: 16),
               Expanded(
@@ -206,16 +285,30 @@ class BrowseRequestsScreen extends StatelessWidget {
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                       ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 4),
                     Row(
                       children: [
                         const Icon(Icons.location_on, size: 14, color: Colors.grey),
-                        Text(
-                          ' $location',
-                          style: GoogleFonts.inter(fontSize: 12, color: Colors.grey[600]),
+                        const SizedBox(width: 4),
+                        Expanded(
+                          child: Text(
+                            location,
+                            style: GoogleFonts.inter(fontSize: 12, color: Colors.grey[600]),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
                       ],
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      description,
+                      style: GoogleFonts.inter(fontSize: 12, color: Colors.grey[500]),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),
@@ -228,23 +321,23 @@ class BrowseRequestsScreen extends StatelessWidget {
                     style: GoogleFonts.inter(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      color: const Color(0xFF005BBF),
+                      color: primaryColor,
                     ),
                   ),
-                  if (tag.isNotEmpty) ...[
+                  if (urgency.isNotEmpty && urgency != 'Flexible') ...[
                     const SizedBox(height: 4),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                       decoration: BoxDecoration(
-                        color: Colors.red[50],
+                        color: urgency == 'ASAP' ? Colors.red[50] : Colors.orange[50],
                         borderRadius: BorderRadius.circular(4),
                       ),
                       child: Text(
-                        tag,
+                        urgency,
                         style: GoogleFonts.inter(
                           fontSize: 10,
                           fontWeight: FontWeight.bold,
-                          color: Colors.red,
+                          color: urgency == 'ASAP' ? Colors.red : Colors.orange,
                         ),
                       ),
                     ),
@@ -257,40 +350,57 @@ class BrowseRequestsScreen extends StatelessWidget {
           const Divider(),
           const SizedBox(height: 12),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                children: [
-                  CircleAvatar(
-                    radius: 16,
-                    backgroundImage: NetworkImage(avatarUrl),
-                  ),
-                  const SizedBox(width: 12),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        clientName,
-                        style: GoogleFonts.inter(fontSize: 13, fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        reviews.isEmpty ? rating : '$rating ($reviews)',
-                        style: GoogleFonts.inter(fontSize: 11, color: Colors.grey[600]),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFfe6a34),
-                  foregroundColor: Colors.white,
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFF2F3FD),
+                  borderRadius: BorderRadius.circular(20),
                 ),
-                child: const Text('Apply Now'),
+                child: Text(
+                  category,
+                  style: GoogleFonts.inter(fontSize: 11, color: Colors.grey[600]),
+                ),
               ),
+              const Spacer(),
+              // Show different button based on ownership
+              if (isOwnRequest)
+                // Your own request - show "Your Request" badge instead of Apply button
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    'Your Request',
+                    style: GoogleFonts.inter(
+                      fontSize: 12,
+                      color: Colors.grey[600],
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                )
+              else
+                // Someone else's request - show Apply button
+                ElevatedButton(
+                  onPressed: () {
+                    // TODO: Implement apply functionality
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Apply feature coming soon!'),
+                        duration: Duration(seconds: 1),
+                      ),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFFfe6a34),
+                    foregroundColor: Colors.white,
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                  ),
+                  child: const Text('Apply Now'),
+                ),
             ],
           ),
         ],

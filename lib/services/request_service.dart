@@ -5,6 +5,7 @@ class RequestService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  // Post a new request
   Future<bool> postRequest({
     required String title,
     required String description,
@@ -38,5 +39,22 @@ class RequestService {
       print('❌ Error: $e');
       return false;
     }
+  }
+
+  // Get all active requests - WITHOUT orderBy to avoid index requirement
+  Stream<QuerySnapshot> getActiveRequests() {
+    print('🔍 Fetching active requests from Firebase');
+    return FirebaseFirestore.instance
+        .collection('requests')
+        .where('status', isEqualTo: 'active')
+        .snapshots();  // Removed orderBy temporarily
+  }
+    // Get user's own requests
+  Stream<QuerySnapshot> getUserRequests(String userId) {
+    print('🔍 Fetching requests for user: $userId');
+    return FirebaseFirestore.instance
+        .collection('requests')
+        .where('userId', isEqualTo: userId)
+        .snapshots();
   }
 }
