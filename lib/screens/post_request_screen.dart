@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../services/request_service.dart';
+import '../services/ai_service.dart';
+import 'location_picker_screen.dart';
 
 class PostRequestScreen extends StatefulWidget {
   const PostRequestScreen({super.key});
@@ -12,6 +15,7 @@ class PostRequestScreen extends StatefulWidget {
 class _PostRequestScreenState extends State<PostRequestScreen> {
   String _selectedCategory = 'Plumbing';
   String _selectedUrgency = 'Today';
+  LatLng? _selectedLocation;
   
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
@@ -21,6 +25,68 @@ class _PostRequestScreenState extends State<PostRequestScreen> {
   bool _isLoading = false;
   
   final RequestService _requestService = RequestService();
+  final AIService _aiService = AIService();
+  bool _isAiLoading = false;
+
+  Future<void> _generateWithAI() async {
+    final TextEditingController promptController = TextEditingController();
+    
+    // Show dialog to get user prompt
+    final String? userPrompt = await showDialog<String>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Row(
+          children: [
+            const Icon(Icons.auto_awesome, color: Color(0xFF005BBF)),
+            const SizedBox(width: 10),
+            Text('Générer avec l\'IA', style: GoogleFonts.inter(fontWeight: FontWeight.bold)),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text('Décrivez brièvement ce dont vous avez besoin (ex: fuite lavabo, peinture salon)'),
+            const SizedBox(height: 16),
+            TextField(
+              controller: promptController,
+              decoration: InputDecoration(
+                hintText: 'Mots-clés...',
+                filled: true,
+                fillColor: Colors.grey[100],
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+              ),
+              autofocus: true,
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Annuler')),
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context, promptController.text),
+            style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF005BBF), foregroundColor: Colors.white),
+            child: const Text('Générer'),
+          ),
+        ],
+      ),
+    );
+
+    if (userPrompt != null && userPrompt.isNotEmpty) {
+      setState(() => _isAiLoading = true);
+      
+      final result = await _aiService.generateRequestDetails(userPrompt);
+      
+      setState(() => _isAiLoading = false);
+
+      if (result != null) {
+        setState(() {
+          _titleController.text = result['title'] ?? '';
+          _descriptionController.text = result['description'] ?? '';
+        });
+      } else {
+        _showError('L\'IA n\'a pas pu générer les détails. Réessayez.');
+      }
+    }
+  }
 
   @override
   void dispose() {
@@ -29,6 +95,24 @@ class _PostRequestScreenState extends State<PostRequestScreen> {
     _budgetController.dispose();
     _locationController.dispose();
     super.dispose();
+  }
+
+  Future<void> _selectLocationOnMap() async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => LocationPickerScreen(
+          initialLocation: _selectedLocation,
+        ),
+      ),
+    );
+    
+    if (result != null && mounted) {
+      setState(() {
+        _selectedLocation = result['location'];
+        _locationController.text = result['address'] ?? 'Position sélectionnée';
+      });
+    }
   }
 
   Future<void> _postRequest() async {
@@ -159,6 +243,25 @@ class _PostRequestScreenState extends State<PostRequestScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // AI Generation Button
+                  SizedBox(
+                    width: double.infinity,
+                    child: OutlinedButton.icon(
+                      onPressed: _isAiLoading ? null : _generateWithAI,
+                      icon: _isAiLoading 
+                        ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2))
+                        : const Icon(Icons.auto_awesome, size: 18),
+                      label: Text(_isAiLoading ? 'Génération...' : 'Générer avec l\'IA ✨'),
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: primaryColor,
+                        side: const BorderSide(color: primaryColor),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+
                   // TITLE FIELD - ADDED!
                   _buildSectionLabel('Title *'),
                   const SizedBox(height: 8),
@@ -232,18 +335,37 @@ class _PostRequestScreenState extends State<PostRequestScreen> {
                   // Location
                   _buildSectionLabel('Location *'),
                   const SizedBox(height: 8),
-                  TextField(
-                    controller: _locationController,
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.location_on_outlined),
-                      hintText: 'Enter address or neighborhood',
-                      filled: true,
-                      fillColor: const Color(0xFFF2F3FD),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide.none,
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: _locationController,
+                          enabled: false,
+                          decoration: InputDecoration(
+                            hintText: 'Sélectionnez un lieu sur la carte',
+                            prefixIcon: const Icon(Icons.location_on_outlined),
+                            filled: true,
+                            fillColor: const Color(0xFFF2F3FD),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide.none,
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
+                      const SizedBox(width: 8),
+                      ElevatedButton(
+                        onPressed: _selectLocationOnMap,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF005BBF),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                        ),
+                        child: const Icon(Icons.map, color: Colors.white),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 24),
                   

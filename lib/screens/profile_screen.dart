@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/auth_provider.dart';
-
+import '../services/google_location_service.dart';
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
@@ -136,6 +136,55 @@ class _ProfileScreenState extends State<ProfileScreen> {
       }
     } catch (e) {
       print('Error loading reviews: $e');
+    }
+  }
+
+  Future<void> _fetchLocation() async {
+    setState(() => _isLoading = true);
+    try {
+      final locationService = GoogleLocationService();
+      final latLng = await locationService.getCurrentLocation();
+      if (latLng != null) {
+        setState(() {
+          // Utiliser l'adresse si disponible, sinon les coordonnées
+          _locationController.text = locationService.currentAddress ?? 
+              '${latLng.latitude.toStringAsFixed(4)}, ${latLng.longitude.toStringAsFixed(4)}';
+        });
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(locationService.currentAddress != null 
+                  ? 'Position mise à jour avec succès' 
+                  : 'Position récupérée (coordonnées uniquement)'),
+              backgroundColor: Colors.green,
+            ),
+          );
+        }
+      } else {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Impossible d\'obtenir la position. Vérifiez les autorisations de votre navigateur.'),
+              backgroundColor: Colors.red,
+              duration: Duration(seconds: 5),
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      print('Error fetching location: $e');
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Erreur: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
     }
   }
 
@@ -710,6 +759,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       decoration: InputDecoration(
                         labelText: 'Location',
                         prefixIcon: const Icon(Icons.location_on, size: 20),
+                        suffixIcon: IconButton(
+                          icon: const Icon(Icons.my_location, color: primaryColor),
+                          onPressed: _fetchLocation,
+                          tooltip: 'Obtenir ma position',
+                        ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),

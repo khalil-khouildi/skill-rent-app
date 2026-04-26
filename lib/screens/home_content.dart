@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'google_map_screen.dart';
 
 class HomeContent extends StatefulWidget {
   const HomeContent({super.key});
@@ -313,9 +314,22 @@ class _HomeContentState extends State<HomeContent> {
                     color: onBackground,
                   ),
                 ),
-                TextButton(
-                  onPressed: () {},
-                  child: const Text('See All'),
+                ElevatedButton.icon(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const GoogleMapScreen()),
+                    );
+                  },
+                  icon: const Icon(Icons.map, color: Colors.white, size: 16),
+                  label: const Text('Voir la carte', style: TextStyle(color: Colors.white)),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF005BBF),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  ),
                 ),
               ],
             ),
@@ -326,7 +340,7 @@ class _HomeContentState extends State<HomeContent> {
               stream: _firestore
                   .collection('users')
                   .where('role', isEqualTo: 'freelancer')
-                  .limit(5)
+                  .limit(20) // On prend un peu plus pour trier
                   .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
@@ -355,6 +369,17 @@ class _HomeContentState extends State<HomeContent> {
                 
                 final freelancers = snapshot.data!.docs;
                 
+                // Tri manuel par note pour éviter l'erreur d'index Firestore
+                freelancers.sort((a, b) {
+                  final dataA = a.data() as Map<String, dynamic>;
+                  final dataB = b.data() as Map<String, dynamic>;
+                  
+                  final ratingA = dataA['rating'] != null ? (dataA['rating'] is num ? dataA['rating'] : double.tryParse(dataA['rating'].toString()) ?? 0.0) : 0.0;
+                  final ratingB = dataB['rating'] != null ? (dataB['rating'] is num ? dataB['rating'] : double.tryParse(dataB['rating'].toString()) ?? 0.0) : 0.0;
+                  
+                  return (ratingB as num).compareTo(ratingA as num);
+                });
+                
                 return SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
@@ -362,8 +387,8 @@ class _HomeContentState extends State<HomeContent> {
                       final data = doc.data() as Map<String, dynamic>;
                       return _buildFreelancerCard(
                         name: data['fullName'] ?? 'Unknown',
-                        skill: 'Available',
-                        rating: (data['rating'] ?? 0.0).toString(),
+                        skill: data['category'] ?? 'Available',
+                        rating: (data['rating'] ?? 0.0).toStringAsFixed(1),
                         reviews: (data['totalReviews'] ?? 0).toString(),
                         freelancerId: doc.id,
                       );

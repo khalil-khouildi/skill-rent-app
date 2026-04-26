@@ -31,9 +31,13 @@ class AuthProvider extends ChangeNotifier {
   
   Future<void> _loadUserData() async {
     if (_user != null) {
-      DocumentSnapshot doc = await _firestore.collection('users').doc(_user!.uid).get();
-      if (doc.exists) {
-        _userData = doc.data() as Map<String, dynamic>;
+      try {
+        DocumentSnapshot doc = await _firestore.collection('users').doc(_user!.uid).get().timeout(const Duration(seconds: 10));
+        if (doc.exists) {
+          _userData = doc.data() as Map<String, dynamic>;
+        }
+      } catch (e) {
+        print('Error loading user data: $e');
       }
       notifyListeners();
     }
@@ -44,7 +48,7 @@ class AuthProvider extends ChangeNotifier {
       UserCredential result = await _auth.signInWithEmailAndPassword(
         email: email.trim(),
         password: password,
-      );
+      ).timeout(const Duration(seconds: 10));
       _user = result.user;
       await _loadUserData();
       notifyListeners();

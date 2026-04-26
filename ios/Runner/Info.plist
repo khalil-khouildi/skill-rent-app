@@ -59,6 +59,10 @@
 		</dict>
 	</array>
 	<!-- End of the Google Sign-in Section -->
-
+	
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Skill Rent a besoin de votre position pour trouver des freelances près de chez vous</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Skill Rent a besoin de votre position pour trouver des freelances près de chez vous</string>
 </dict>
 </plist>
