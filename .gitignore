@@ -55,3 +55,4 @@ macos/Runner/GoogleService-Info.plist
 # Env files
 .env
 .env.*
+lib/config.dart

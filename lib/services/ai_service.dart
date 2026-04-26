@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart' show kIsWeb;
+import '../config.dart';
 
 class AIService {
-  final String _apiKey = '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';
+  final String _apiKey = AppConfig.groqApiKey;
   final String _baseUrl = 'https://api.groq.com/openai/v1/chat/completions';
 
   Future<Map<String, String>?> generateRequestDetails(String prompt) async {
