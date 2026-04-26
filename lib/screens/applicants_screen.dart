@@ -3,10 +3,16 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../services/application_service.dart';
+import '../services/chat_service.dart';
+import 'chat_screen.dart';
 
 class ApplicantsScreen extends StatefulWidget {
-  const ApplicantsScreen({super.key, required this.requestId, required this.requestTitle});
-  
+  const ApplicantsScreen({
+    super.key,
+    required this.requestId,
+    required this.requestTitle,
+  });
+
   final String requestId;
   final String requestTitle;
 
@@ -16,11 +22,110 @@ class ApplicantsScreen extends StatefulWidget {
 
 class _ApplicantsScreenState extends State<ApplicantsScreen> {
   final ApplicationService _applicationService = ApplicationService();
+  final ChatService _chatService = ChatService();
   final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  void _startChat(String freelancerId, String freelancerName) async {
+    try {
+      final chatId = await _chatService.getOrCreateChat(
+        freelancerId,
+        freelancerName,
+      );
+
+      if (context.mounted) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                ChatScreen(chatId: chatId, otherUserId: freelancerId),
+          ),
+        );
+      }
+    } catch (e) {
+      print('Error starting chat: $e');
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error starting chat: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
+  }
+
+  Future<void> _acceptApplication(
+    BuildContext context,
+    String applicationId,
+  ) async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const Center(child: CircularProgressIndicator()),
+    );
+
+    final success = await _applicationService.acceptApplication(
+      applicationId,
+      widget.requestId,
+    );
+
+    if (context.mounted) Navigator.pop(context);
+
+    if (success && context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('✅ Freelancer accepted!'),
+          backgroundColor: Colors.green,
+        ),
+      );
+    } else if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('❌ Failed to accept'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
+
+  void _showRejectDialog(BuildContext context, String applicationId) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Reject Application'),
+        content: const Text('Are you sure you want to reject this applicant?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () async {
+              Navigator.pop(context);
+
+              await _applicationService.rejectApplication(applicationId);
+
+              if (context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Application rejected'),
+                    backgroundColor: Colors.orange,
+                  ),
+                );
+              }
+            },
+            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            child: const Text('Reject'),
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     const primaryColor = Color(0xFF005BBF);
+    final currentUserId = _auth.currentUser?.uid ?? '';
 
     return Scaffold(
       backgroundColor: const Color(0xFFF9F9FF),
@@ -33,78 +138,123 @@ class _ApplicantsScreenState extends State<ApplicantsScreen> {
         ),
         title: Text(
           'Applicants',
-          style: GoogleFonts.inter(fontWeight: FontWeight.bold, color: Colors.black),
+          style: GoogleFonts.inter(
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
         ),
         centerTitle: true,
       ),
-      body: StreamBuilder<QuerySnapshot>(
-        stream: _applicationService.getApplicationsForRequest(widget.requestId),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Center(
-              child: Text('Error: ${snapshot.error}'),
-            );
-          }
-          
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          
-          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.people_outline, size: 64, color: Colors.grey[400]),
-                  const SizedBox(height: 16),
-                  Text(
-                    'No applicants yet',
-                    style: GoogleFonts.inter(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey[600],
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Wait for freelancers to apply',
-                    style: GoogleFonts.inter(
-                      fontSize: 14,
-                      color: Colors.grey[500],
-                    ),
-                  ),
-                ],
-              ),
-            );
-          }
-          
-          final applicants = snapshot.data!.docs;
-          
-          return ListView.builder(
+      body: Column(
+        children: [
+          // Request Summary
+          Container(
+            margin: const EdgeInsets.all(20),
             padding: const EdgeInsets.all(20),
-            itemCount: applicants.length,
-            itemBuilder: (context, index) {
-              final application = applicants[index];
-              final data = application.data() as Map<String, dynamic>;
-              
-              return _buildApplicantCard(
-                applicationId: application.id,
-                name: data['freelancerName'] ?? 'Unknown',
-                proposal: data['proposal'] ?? '',
-                price: '\$${data['proposedPrice']?.toString() ?? '0'}',
-                status: data['status'] ?? 'pending',
-              );
-            },
-          );
-        },
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: const Color(0xFFE0E2EC)),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  widget.requestTitle,
+                  style: GoogleFonts.inter(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Request ID: ${widget.requestId.substring(0, 8)}...',
+                  style: GoogleFonts.inter(
+                    fontSize: 12,
+                    color: Colors.grey[600],
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          // Applicants List
+          Expanded(
+            child: StreamBuilder<QuerySnapshot>(
+              stream: _applicationService.getApplicationsForRequest(
+                widget.requestId,
+              ),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                }
+
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.people_outline,
+                          size: 64,
+                          color: Colors.grey[400],
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          'No applicants yet',
+                          style: GoogleFonts.inter(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'Wait for freelancers to apply',
+                          style: GoogleFonts.inter(
+                            fontSize: 14,
+                            color: Colors.grey[500],
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+
+                final applicants = snapshot.data!.docs;
+
+                return ListView.builder(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  itemCount: applicants.length,
+                  itemBuilder: (context, index) {
+                    final application = applicants[index];
+                    final data = application.data() as Map<String, dynamic>;
+
+                    return _buildApplicantCard(
+                      applicationId: application.id,
+                      freelancerId: data['freelancerId'] ?? '',
+                      name: data['freelancerName'] ?? 'Unknown',
+                      proposal: data['proposal'] ?? '',
+                      price: '\$${data['proposedPrice']?.toString() ?? '0'}',
+                      status: data['status'] ?? 'pending',
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
 
   Widget _buildApplicantCard({
     required String applicationId,
+    required String freelancerId,
     required String name,
     required String proposal,
     required String price,
@@ -112,7 +262,9 @@ class _ApplicantsScreenState extends State<ApplicantsScreen> {
   }) {
     const primaryColor = Color(0xFF005BBF);
     final isPending = status == 'pending';
-    
+    final isAccepted = status == 'accepted';
+    final currentUserId = _auth.currentUser?.uid ?? '';
+
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(20),
@@ -120,8 +272,8 @@ class _ApplicantsScreenState extends State<ApplicantsScreen> {
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: status == 'accepted' ? primaryColor : const Color(0xFFE0E2EC),
-          width: status == 'accepted' ? 2 : 1,
+          color: isAccepted ? primaryColor : const Color(0xFFE0E2EC),
+          width: isAccepted ? 2 : 1,
         ),
         boxShadow: [
           BoxShadow(
@@ -134,12 +286,15 @@ class _ApplicantsScreenState extends State<ApplicantsScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (status == 'accepted')
+          if (isAccepted)
             Align(
               alignment: Alignment.topRight,
               child: Container(
                 margin: const EdgeInsets.only(bottom: 12),
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
                   color: primaryColor,
                   borderRadius: BorderRadius.circular(8),
@@ -147,7 +302,11 @@ class _ApplicantsScreenState extends State<ApplicantsScreen> {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(Icons.check_circle, color: Colors.white, size: 14),
+                    const Icon(
+                      Icons.check_circle,
+                      color: Colors.white,
+                      size: 14,
+                    ),
                     const SizedBox(width: 4),
                     Text(
                       'Accepted',
@@ -219,8 +378,23 @@ class _ApplicantsScreenState extends State<ApplicantsScreen> {
               ),
             ],
           ),
-          if (isPending) ...[
-            const SizedBox(height: 20),
+          const SizedBox(height: 20),
+          if (isAccepted)
+            ElevatedButton(
+              onPressed: () {
+                _startChat(freelancerId, name);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: primaryColor,
+                foregroundColor: Colors.white,
+                minimumSize: const Size(double.infinity, 45),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              child: const Text('Message'),
+            )
+          else if (isPending)
             Row(
               children: [
                 Expanded(
@@ -256,75 +430,8 @@ class _ApplicantsScreenState extends State<ApplicantsScreen> {
                 ),
               ],
             ),
-          ],
         ],
       ),
     );
   }
-
-  void _acceptApplication(BuildContext context, String applicationId) async {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => const Center(child: CircularProgressIndicator()),
-    );
-    
-    final success = await _applicationService.acceptApplication(
-      applicationId,
-      widget.requestId,
-    );
-    
-    if (context.mounted) Navigator.pop(context);
-    
-    if (success && context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('✅ Freelancer accepted!'),
-          backgroundColor: Colors.green,
-        ),
-      );
-    } else if (context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('❌ Failed to accept'),
-          backgroundColor: Colors.red,
-        ),
-      );
-    }
-  }
-
-  void _showRejectDialog(BuildContext context, String applicationId) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Reject Application'),
-        content: const Text('Are you sure you want to reject this applicant?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () async {
-              Navigator.pop(context);
-              
-              await _applicationService.rejectApplication(applicationId);
-              
-              if (context.mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Application rejected'),
-                    backgroundColor: Colors.orange,
-                  ),
-                );
-              }
-            },
-            style: TextButton.styleFrom(foregroundColor: Colors.red),
-            child: const Text('Reject'),
-          ),
-        ],
-      ),
-    );
-  }
-  
 }

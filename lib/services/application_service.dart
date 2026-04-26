@@ -16,11 +16,10 @@ class ApplicationService {
       
       print('📝 Submitting application for request: $requestId');
       
-      // Get user data for the name
       final userData = await _firestore.collection('users').doc(userId).get();
       final userName = userData.data()?['fullName'] ?? 'User';
       
-      // Check if already applied to this request
+      // Check if already applied
       final existingApplication = await _firestore
           .collection('applications')
           .where('requestId', isEqualTo: requestId)
@@ -32,7 +31,6 @@ class ApplicationService {
         return false;
       }
       
-      // Create the application document
       DocumentReference docRef = _firestore.collection('applications').doc();
       
       await docRef.set({
@@ -42,7 +40,7 @@ class ApplicationService {
         'freelancerName': userName,
         'proposal': proposal,
         'proposedPrice': proposedPrice,
-        'status': 'pending', // pending, accepted, rejected
+        'status': 'pending',
         'createdAt': FieldValue.serverTimestamp(),
       });
       
@@ -62,33 +60,30 @@ class ApplicationService {
     }
   }
   
-  // Get all applications for a specific request (for the client)
+  // Get applications for a specific request - WITHOUT orderBy to avoid index
   Stream<QuerySnapshot> getApplicationsForRequest(String requestId) {
     print('🔍 Fetching applications for request: $requestId');
     return _firestore
         .collection('applications')
         .where('requestId', isEqualTo: requestId)
-        .orderBy('createdAt', descending: true)
-        .snapshots();
+        .snapshots();  // Removed orderBy temporarily
   }
   
-  // Get all applications submitted by the current freelancer
+  // Get freelancer's applications - WITHOUT orderBy
   Stream<QuerySnapshot> getMyApplications() {
     final userId = _auth.currentUser!.uid;
     print('🔍 Fetching my applications for user: $userId');
     return _firestore
         .collection('applications')
         .where('freelancerId', isEqualTo: userId)
-        .orderBy('createdAt', descending: true)
-        .snapshots();
+        .snapshots();  // Removed orderBy
   }
   
-  // Accept an application (client action)
+  // Accept an application
   Future<bool> acceptApplication(String applicationId, String requestId) async {
     try {
       print('📝 Accepting application: $applicationId');
       
-      // Update the application status to accepted
       await _firestore.collection('applications').doc(applicationId).update({
         'status': 'accepted',
       });
@@ -120,7 +115,7 @@ class ApplicationService {
     }
   }
   
-  // Reject an application (client action)
+  // Reject an application
   Future<bool> rejectApplication(String applicationId) async {
     try {
       print('📝 Rejecting application: $applicationId');
@@ -134,20 +129,6 @@ class ApplicationService {
     } catch (e) {
       print('❌ Error rejecting application: $e');
       return false;
-    }
-  }
-  
-  // Get application by ID
-  Future<Map<String, dynamic>?> getApplication(String applicationId) async {
-    try {
-      final doc = await _firestore.collection('applications').doc(applicationId).get();
-      if (doc.exists) {
-        return doc.data() as Map<String, dynamic>;
-      }
-      return null;
-    } catch (e) {
-      print('❌ Error getting application: $e');
-      return null;
     }
   }
   

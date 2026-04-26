@@ -8,7 +8,6 @@ import 'screens/login_screen.dart';
 import 'screens/register_screen.dart';
 import 'screens/main_screen.dart';
 import 'screens/post_request_screen.dart';
-import 'screens/chat_screen.dart';
 import 'providers/auth_provider.dart';
 
 void main() async {
@@ -49,8 +48,6 @@ class MyApp extends StatelessWidget {
           '/register': (context) => const RegisterScreen(),
           '/home': (context) => const MainScreen(),
           '/post-request': (context) => const PostRequestScreen(),
-          '/chat': (context) => const ChatScreen(),
-          // REMOVE '/applicants' from here - it needs parameters
         },
       ),
     );
